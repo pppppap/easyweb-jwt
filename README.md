@@ -5,6 +5,7 @@
  <br/>
  [http://www.layui.com/admin/std/dist/views](http://www.layui.com/admin/std/dist/views)
  <br/>
+由于layui这个admin模板的结构跟我们平常前后端一体的结构不一样，所以之前一直在对layuiadmin整改，时间花费较多，目前前端界面已经整改完毕，把layuiadmin相关的一些东西封装独立，方便引用，正在用这套界面继续开发EasyWeb，目前计划是管理系统使用SpringBoot+Shiro+beetl方式开发，再加一个api模块用于做接口，可以用于APP的接口，和前后端分离项目，权限控制细化到请求方法，接口同样是使用RESTful的写法，api的权限控制（JwtPermission2）去掉注解，与SpringMvc解耦，与Redis解耦，控制api模块每个接口以及请求接口的请求方式(Get、Post、Put....)。
  
 ## 简介
 前后端分离模式的后端管理系统模板，前端页面使用路由实现单页面应用，后端接口遵循RESTful风格。<br/>
