@@ -22,7 +22,7 @@
 核心框架(轻量简洁) | [Layui](http://www.layui.com/)、[jQuery](http://jquery.cuishifeng.cn/)
 路由框架(纯js打造) | [Q.js](https://github.com/itorr/q.js) (超级轻量、简单易学)
  
-项目是用MyEclipes开发的，所以需要导入源码的朋友需要使用MyEclipes导入，刚转入IDEA，也体会到了IDEA的强大，后面有时间也会改成IDEA版本的！非常感谢朋友们的留言！ 
+项目是用MyEclipes开发的，所以需要导入源码的朋友需要使用MyEclipes导入，后面有时间也会出IDEA版本（+SpringBoot）！
  
 ------------------------
 
@@ -57,11 +57,10 @@
 ## 技术选型说明
 ### 说明1、为什么不用Shiro、Auth2.0等知名权限框架？
   Shiro是基于Session的权限框架，并太适合于前后端分离的项目，和REST的规范([什么是RESTful规范？](#1什么是restful)),JWT(JSON Web Token)比较适用于前后端分离的项目。 
-网上也有Shiro整合JWT的教程，步骤有些繁琐，并且这种做法有点伤筋动骨。 Auth2.0主要是做第三方应用授权的框架，像
-我们常见的QQ、微信、微博授权登录这样的，学习成本高，对于企业项目的内部账号登录验证有点大材小用。 所以这里选用了[JwtPermission](https://github.com/whvcse/JwtPermission)来作为权限框架。
+网上也有Shiro整合JWT的教程，步骤有些繁琐。 Auth2.0学习成本高，对于小项目有点大材小用。 所以这里选用了[JwtPermission](https://github.com/whvcse/JwtPermission)来作为权限框架。
         
 ### 说明2、为什么不用Vue、React来做前后端分离？
-一般公司的后台管理系统都是表格，界面也比较简单，所以前端的工作基本都是有后端程序员来完成的，后端人员大多都只会一个jquery和bootstrap，所以目前的管理系统大多都使用iframe、SiteMesh技术，包括还有使用jsp的，所以此项目选用了Q.js作为路由框架，选用layui作为核心框架，layui的数据表格还是不错的，相比Vue、react来说后端人员看看文档就会了。
+一般公司的后台管理系统都是表格，界面也比较简单，所以前端的工作基本都是有后端程序员来完成的，后端人员大多都只会一个jquery和bootstrap，VUE需要有Webpack、Es6等基础，目前的管理系统大多都使用iframe、SiteMesh技术，包括还有使用jsp的，所以让一个后端程序员搞前后端分离就够麻烦，再搞vue的路由更是身心疲惫啊，所以此项目选用了Q.js作为路由框架，选用layui作为核心框架，layui的数据表格还是不错的，相比Vue、react来说后端人员看看文档就会了。
        
 ### 说明3、为什么使用前后端分离？
 具体为什么要分离可以看看论坛别人的讨论，我个人有以下几个观点：
