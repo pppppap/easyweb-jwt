@@ -1,92 +1,151 @@
 package com.wf.ew.system.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.wf.ew.common.PageResult;
+import com.wf.ew.common.exception.BusinessException;
+import com.wf.ew.common.exception.ParameterException;
+import com.wf.ew.common.utils.StringUtil;
+import com.wf.ew.common.utils.UUIDUtil;
+import com.wf.ew.system.dao.RoleMapper;
+import com.wf.ew.system.dao.UserMapper;
+import com.wf.ew.system.dao.UserRoleMapper;
+import com.wf.ew.system.model.Role;
+import com.wf.ew.system.model.User;
+import com.wf.ew.system.model.UserRole;
+import com.wf.ew.system.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.wangfan.endecrypt.utils.EndecryptUtils;
-import com.wf.ew.core.PageResult;
-import com.wf.ew.core.exception.BusinessException;
-import com.wf.ew.core.exception.ParameterException;
-import com.wf.ew.core.utils.UUIDUtil;
-import com.wf.ew.system.dao.UserMapper;
-import com.wf.ew.system.model.User;
-import com.wf.ew.system.service.UserService;
-
-@Service(value="userService")
+@Service
 public class UserServiceImpl implements UserService {
-	@Autowired
-	private UserMapper userMapper;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private RoleMapper roleMapper;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
-	@Override
-	public PageResult<User> getUsers(int pageNum, int pageSize, Integer status, String searchKey, String searchValue) {
-		Page<Object> startPage = PageHelper.startPage(pageNum, pageSize);
-		List<User> users = userMapper.selectUsers(status, searchKey, searchValue);
-		PageResult<User> result = new PageResult<User>();
-		result.setData(users);
-		result.setCount(startPage.getTotal());
-		return result;
-	}
+    @Override
+    public User getByUsername(String username) {
+        return userMapper.getByUsername(username);
+    }
 
-	@Override
-	public boolean addUser(User user) throws BusinessException {
-		if(getUserByAccount(user.getUserAccount())!=null){
-			throw new BusinessException("账号已经存在");
-		}
-		user.setUserId(UUIDUtil.randomUUID8());
-		String decryptMd5 = EndecryptUtils.encrytMd5(user.getUserPassword(), user.getUserId(), 3);
-		user.setUserPassword(decryptMd5);
-		user.setUserStatus(0);
-		user.setCreateTime(new Date());
-		return userMapper.insertSelective(user)>0;
-	}
+    @Override
+    public PageResult<User> list(int pageNum, int pageSize, boolean showDelete, String column, String value) {
+        Wrapper<User> wrapper = new EntityWrapper<User>();
+        if (StringUtil.isNotBlank(column)) {
+            wrapper.like(column, value);
+        }
+        if (!showDelete) {
+            wrapper.eq("state", 0);
+        }
+        Page<Object> userPage = new Page<>(pageNum, pageNum);
+        List<User> userList = userMapper.selectPage(userPage, wrapper);
+        PageResult<User> result = new PageResult<>();
+        // 查询user的角色
+        List<String> userIds = new ArrayList<>();
+        for (User one : userList) {
+            userIds.add(one.getUserId());
+        }
+        List<Role> roles = roleMapper.selectList(null);
+        List<UserRole> userRoles = userRoleMapper.selectList(new EntityWrapper().in("user_id", userIds));
+        for (User one : userList) {
+            List<Role> tempUrs = new ArrayList<>();
+            for (UserRole ur : userRoles) {
+                if (one.getUserId().equals(ur.getUserId())) {
+                    for (Role r : roles) {
+                        if (ur.getRoleId().equals(r.getRoleId())) {
+                            tempUrs.add(r);
+                        }
+                    }
+                }
+            }
+            one.setRoles(tempUrs);
+        }
+        //
+        result.setData(userList);
+        result.setCount(userPage.getTotal());
+        return result;
+    }
 
-	@Override
-	public boolean updateUser(User user) {
-		return userMapper.updateByPrimaryKeySelective(user)>0;
-	}
+    @Override
+    public boolean add(User user) throws BusinessException {
+        String userId = UUIDUtil.randomUUID8();
+        user.setUserId(userId);
+        String finalSecret = "{bcrypt}" + new BCryptPasswordEncoder().encode(user.getPassword());
+        user.setPassword(finalSecret);
+        user.setState(0);
+        user.setCreateTime(new Date());
+        try {
+            boolean rs = userMapper.insert(user) > 0;
+            if (rs) {
+                addUserRole(userId, user.getRoles());
+            }
+            return rs;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BusinessException("账号已经存在");
+        }
+    }
 
-	@Override
-	public boolean updateUserStatus(String userId, int status) throws ParameterException {
-		if(status!=0&&status!=1){
-			throw new ParameterException();
-		}
-		User user = new User();
-		user.setUserId(userId);
-		user.setUserStatus(status);
-		return userMapper.updateByPrimaryKeySelective(user)>0;
-	}
+    @Override
+    public boolean update(User user) {
+        boolean rs = userMapper.updateById(user) > 0;
+        if (rs) {
+            userRoleMapper.delete(new EntityWrapper().eq("user_id", user.getUserId()));
+            addUserRole(user.getUserId(), user.getRoles());
+        }
+        return rs;
+    }
 
-	@Override
-	public User getUserByAccount(String userAccount) {
-		return userMapper.selectUserByAccount(userAccount);
-	}
+    private void addUserRole(String userId, List<Role> roles) {
+        if (roles == null) {
+            return;
+        }
+        for (Role role : roles) {
+            UserRole userRole = new UserRole();
+            userRole.setId(UUIDUtil.randomUUID8());
+            userRole.setUserId(userId);
+            userRole.setRoleId(role.getRoleId());
+            userRole.setCreateTime(new Date());
+            userRoleMapper.insert(userRole);
+        }
+    }
 
-	@Override
-	public boolean updateUserPsw(String userId, String password) {
-		User user = new User();
-		user.setUserId(userId);
-		String decryptMd5 = EndecryptUtils.encrytMd5(password, userId, 3);
-		user.setUserPassword(decryptMd5);
-		return userMapper.updateByPrimaryKeySelective(user)>0;
-	}
+    @Override
+    public boolean updateState(String userId, int state) throws ParameterException {
+        if (state != 0 && state != 1) {
+            throw new ParameterException("state值需要在[0,1]中");
+        }
+        User user = new User();
+        user.setUserId(userId);
+        user.setState(state);
+        return userMapper.updateById(user) > 0;
+    }
 
-	@Override
-	public User getUserById(String userId) {
-		return userMapper.selectByPrimaryKey(userId);
-	}
+    @Override
+    public boolean updatePsw(String userId, String password) {
+        User user = new User();
+        user.setUserId(userId);
+        String finalSecret = "{bcrypt}" + new BCryptPasswordEncoder().encode(password);
+        user.setPassword(finalSecret);
+        return userMapper.updateById(user) > 0;
+    }
 
-	@Override
-	public boolean deleteUser(String userId) throws BusinessException {
-		try{
-			return userMapper.deleteByPrimaryKey(userId)>0;
-		}catch (Exception e) {
-			e.printStackTrace();
-			throw new BusinessException("用户已被关联");
-		}
-	}
+    @Override
+    public User getById(String userId) {
+        return userMapper.selectById(userId);
+    }
+
+    @Override
+    public boolean delete(String userId) {
+        return userMapper.deleteById(userId) > 0;
+    }
 }

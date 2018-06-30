@@ -1,100 +1,88 @@
 package com.wf.ew.system.controller;
 
-import java.io.UnsupportedEncodingException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.wf.etp.authz.annotation.RequiresPermissions;
-import com.wf.ew.core.PageResult;
-import com.wf.ew.core.ResultMap;
-import com.wf.ew.core.exception.BusinessException;
-import com.wf.ew.core.exception.ParameterException;
+import com.wf.ew.common.JsonResult;
+import com.wf.ew.common.PageResult;
+import com.wf.ew.common.utils.ReflectUtil;
 import com.wf.ew.system.model.Role;
 import com.wf.ew.system.service.RoleService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-/**
- * 角色管理
- * 
- * @author wangfan
- * @date 2017-3-24 下午3:56:29
- */
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+@Api(value = "角色相关的接口", tags = "role")
 @RestController
-@RequestMapping("/api/role")
+@RequestMapping("/role")
 public class RoleController {
-	@Autowired
-	private RoleService roleService;
+    @Autowired
+    private RoleService roleService;
 
-	/**
-	 * 查询所有角色
-	 */
-	@GetMapping()
-	public PageResult<Role> list(Integer page, Integer limit, String searchKey, String searchValue, Integer isDelete) throws UnsupportedEncodingException {
-		if(searchValue != null){
-			searchValue = new String(searchValue.getBytes("ISO-8859-1"), "UTF-8");
-		}
-		if(page == null) {
-			page = 0;
-			limit = 0;
-		}
-		return roleService.getRoles(page, limit, searchKey, searchValue, isDelete);
-	}
-	
-	/**
-	 * 添加角色
-	 */
-	@RequiresPermissions("system/role")
-	@PostMapping()
-	public ResultMap add(Role role) {
-		if (roleService.addRole(role)) {
-			return ResultMap.ok("添加成功！");
-		} else {
-			return ResultMap.error("添加失败！");
-		}
-	}
+    @ApiOperation(value = "查询所有角色")
+    @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "header")
+    @GetMapping()
+    public PageResult<Role> list(String keyword) {
+        List<Role> list = roleService.list(false);
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            keyword = keyword.trim();
+            Iterator<Role> iterator = list.iterator();
+            while (iterator.hasNext()) {
+                Role next = iterator.next();
+                boolean b = next.getRoleId().contains(keyword) || next.getRoleName().contains(keyword) || next.getComments().contains(keyword);
+                if (!b) {
+                    iterator.remove();
+                }
+            }
+        }
+        return new PageResult<>(list);
+    }
 
-	/**
-	 * 修改角色
-	 */
-	@RequiresPermissions("system/role")
-	@PutMapping()
-	public ResultMap update(Role role) {
-		if (roleService.updateRole(role)) {
-			return ResultMap.ok("修改成功！");
-		} else {
-			return ResultMap.error("修改失败！");
-		}
-	}
+    @ApiOperation(value = "添加角色")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "role", value = "角色信息", required = true, dataType = "Role"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "header")
+    })
+    @PostMapping()
+    public JsonResult add(Role role) {
+        if (roleService.add(role)) {
+            return JsonResult.ok("添加成功");
+        } else {
+            return JsonResult.error("添加失败");
+        }
+    }
 
-	/**
-	 * 修改状态
-	 */
-	@RequiresPermissions("system/role")
-	@PutMapping("/status")
-	public ResultMap updateStatus(String roleId, int status)
-			throws ParameterException {
-		if (roleService.updateRoleStatus(roleId, status)) {
-			return ResultMap.ok();
-		} else {
-			return ResultMap.error();
-		}
-	}
+    @ApiOperation(value = "修改角色")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "role", value = "角色信息", required = true, dataType = "Role"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "header")
+    })
+    @PutMapping()
+    public JsonResult update(Role role) {
+        if (roleService.update(role)) {
+            return JsonResult.ok("修改成功！");
+        } else {
+            return JsonResult.error("修改失败！");
+        }
+    }
 
-	/**
-	 * 删除角色
-	 */
-	@RequiresPermissions("system/role")
-	@DeleteMapping("/{id}")
-	public ResultMap delete(@PathVariable("id") String roleId) throws BusinessException {
-		if (roleService.deleteRole(roleId)) {
-			return ResultMap.ok("删除成功");
-		}
-		return ResultMap.error("删除失败");
-	}
+    @ApiOperation(value = "删除角色")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "roleId", value = "角色id", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "header")
+    })
+    @DeleteMapping("/{id}")
+    public JsonResult delete(@PathVariable("id") String roleId) {
+        if (true) {
+            return JsonResult.error("演示系统关闭该功能");
+        }
+        if (roleService.updateState(roleId, 1)) {
+            return JsonResult.ok("删除成功");
+        }
+        return JsonResult.error("删除失败");
+    }
 }

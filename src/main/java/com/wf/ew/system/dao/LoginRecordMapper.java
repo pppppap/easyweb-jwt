@@ -1,33 +1,14 @@
 package com.wf.ew.system.dao;
 
+import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.wf.ew.system.model.LoginRecord;
-import com.wf.ew.system.model.LoginRecordExample;
-
-import java.util.List;
+import com.wf.ew.system.model.User;
 import org.apache.ibatis.annotations.Param;
 
-public interface LoginRecordMapper {
-    int countByExample(LoginRecordExample example);
+import java.util.List;
 
-    int deleteByExample(LoginRecordExample example);
+public interface LoginRecordMapper extends BaseMapper<LoginRecord> {
 
-    int deleteByPrimaryKey(String id);
-
-    int insert(LoginRecord record);
-
-    int insertSelective(LoginRecord record);
-
-    List<LoginRecord> selectByExample(LoginRecordExample example);
-
-    LoginRecord selectByPrimaryKey(String id);
-
-    int updateByExampleSelective(@Param("record") LoginRecord record, @Param("example") LoginRecordExample example);
-
-    int updateByExample(@Param("record") LoginRecord record, @Param("example") LoginRecordExample example);
-
-    int updateByPrimaryKeySelective(LoginRecord record);
-
-    int updateByPrimaryKey(LoginRecord record);
-    
-    public List<LoginRecord> selectLoginRecords(@Param("startDate")String startDate,@Param("endDate")String endDate,@Param("searchAccount")String searchAccount);
+    List<LoginRecord> listFull(Page<LoginRecord> page, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("account") String account);
 }

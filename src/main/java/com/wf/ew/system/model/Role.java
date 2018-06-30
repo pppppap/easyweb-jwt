@@ -1,19 +1,24 @@
 package com.wf.ew.system.model;
 
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.util.Date;
 
+@TableName("sys_role")
 public class Role {
+    @TableId
     private String roleId;
 
     private String roleName;
 
     private String comments;
 
+    private Integer isDelete;
+
     private Date createTime;
 
     private Date updateTime;
-
-    private Integer isDelete;
 
     public String getRoleId() {
         return roleId;
@@ -39,6 +44,14 @@ public class Role {
         this.comments = comments == null ? null : comments.trim();
     }
 
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -53,13 +66,5 @@ public class Role {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public Integer getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(Integer isDelete) {
-        this.isDelete = isDelete;
     }
 }

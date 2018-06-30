@@ -1,8 +1,14 @@
 package com.wf.ew.system.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.util.Date;
 
+@TableName("sys_login_record")
 public class LoginRecord {
+    @TableId
     private String id;
 
     private String userId;
@@ -16,10 +22,12 @@ public class LoginRecord {
     private String ipAddress;
 
     private Date createTime;
-    
-    private String userNickName;  //用户名
-	
-	private String userAccount;  //用户账号
+
+    @TableField(exist = false)
+    private String nickName;
+
+    @TableField(exist = false)
+    private String username;
 
     public String getId() {
         return id;
@@ -77,20 +85,19 @@ public class LoginRecord {
         this.createTime = createTime;
     }
 
-	public String getUserNickName() {
-		return userNickName;
-	}
+    public String getNickName() {
+        return nickName;
+    }
 
-	public void setUserNickName(String userNickName) {
-		this.userNickName = userNickName;
-	}
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 
-	public String getUserAccount() {
-		return userAccount;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setUserAccount(String userAccount) {
-		this.userAccount = userAccount;
-	}
-    
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

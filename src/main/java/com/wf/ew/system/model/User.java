@@ -1,97 +1,132 @@
 package com.wf.ew.system.model;
 
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
-/**
- * User
- * @author wangfan
- * @date 2017-7-4 下午2:49:38
- */
-public class User implements Serializable {
-	private static final long serialVersionUID = 1972489869581873269L;
+@TableName("sys_user")
+public class User implements UserDetails {
+    private static final long serialVersionUID = 242146703513492331L;
+    @TableId
+    private String userId;
 
-	private String userId;
+    private String username;
 
-    private String userAccount;
+    private String password;
 
-    private String userPassword;
+    private String nickName;
 
-    private String userNickname;
-
-    private String mobilePhone;
+    private String avatar;
 
     private String sex;
 
-    private Integer userStatus;  //0正常，1冻结
+    private String phone;
+
+    private String email;
+
+    private Integer emailVerified;
+
+    private String personId;
+
+    private Integer state;
 
     private Date createTime;
 
     private Date updateTime;
 
-    private String roleId;
+    @TableField(exist = false)
+    private List<Authorities> authorities;  //权限
 
-    private String token;
-    
-    private String roleName;  //角色名
+    @TableField(exist = false)
+    private List<Role> roles;  //角色
 
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
-        this.userId = userId == null ? null : userId.trim();
+        this.userId = userId;
     }
 
-    public String getUserAccount() {
-        return userAccount;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setUserAccount(String userAccount) {
-        this.userAccount = userAccount == null ? null : userAccount.trim();
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getUserPassword() {
-        return userPassword;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword == null ? null : userPassword.trim();
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
-    public String getUserNickname() {
-		return userNickname;
-	}
-
-	public void setUserNickname(String userNickname) {
-		this.userNickname = userNickname;
-	}
-
-	public String getMobilePhone() {
-        return mobilePhone;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setMobilePhone(String mobilePhone) {
-        this.mobilePhone = mobilePhone == null ? null : mobilePhone.trim();
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getSex() {
-		return sex;
-	}
+        return sex;
+    }
 
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 
-	public Integer getUserStatus() {
-		return userStatus;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public void setUserStatus(Integer userStatus) {
-		this.userStatus = userStatus;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public Date getCreateTime() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Integer getEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(Integer emailVerified) {
+        this.emailVerified = emailVerified;
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public Date getCreateTime() {
         return createTime;
     }
 
@@ -107,38 +142,50 @@ public class User implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public String getRoleId() {
-        return roleId;
+    public void setAuthorities(List<Authorities> authorities) {
+        this.authorities = authorities;
     }
 
-    public void setRoleId(String roleId) {
-        this.roleId = roleId == null ? null : roleId.trim();
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public String getToken() {
-        return token;
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
-    public void setToken(String token) {
-        this.token = token == null ? null : token.trim();
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authorities;
     }
 
-	public String getRoleName() {
-		return roleName;
-	}
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
 
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
-	}
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
 
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", userAccount=" + userAccount
-				+ ", userPassword=" + userPassword + ", userNickname="
-				+ userNickname + ", mobilePhone=" + mobilePhone + ", sex="
-				+ sex + ", userStatus=" + userStatus + ", createTime="
-				+ createTime + ", updateTime=" + updateTime + ", roleId="
-				+ roleId + ", token=" + token + ", roleName=" + roleName + "]";
-	}
-    
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;  //账户是否未过期
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.state != 1;  //账户是否未锁定
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;  //凭证(密码)是否未过期
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;  //用户是否启用
+    }
 }
