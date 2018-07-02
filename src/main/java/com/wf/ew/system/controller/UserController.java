@@ -3,6 +3,7 @@ package com.wf.ew.system.controller;
 import com.wf.ew.common.BaseController;
 import com.wf.ew.common.JsonResult;
 import com.wf.ew.common.PageResult;
+import com.wf.ew.common.utils.StringUtil;
 import com.wf.ew.system.model.Role;
 import com.wf.ew.system.model.User;
 import com.wf.ew.system.service.UserService;
@@ -43,23 +44,29 @@ public class UserController extends BaseController {
             page = 0;
             limit = 0;
         }
+        if (StringUtil.isBlank(searchValue)) {
+            searchKey = null;
+        }
         return userService.list(page, limit, true, searchKey, searchValue);
     }
 
     @ApiOperation(value = "添加用户", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "user", value = "用户信息", required = true, dataType = "User"),
-            @ApiImplicitParam(name = "roleId", value = "用户角色id", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "roleId", value = "用户角色id，多个用','分割", required = true, dataType = "String"),
             @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "header")
     })
     @PostMapping()
     public JsonResult add(User user, String roleId) {
-        user.setPassword("123456");
         List<Role> roleIds = new ArrayList<>();
-        Role role = new Role();
-        role.setRoleId(roleId);
-        roleIds.add(role);
+        String[] split = roleId.split(",");
+        for (String t : split) {
+            Role role = new Role();
+            role.setRoleId(t);
+            roleIds.add(role);
+        }
         user.setRoles(roleIds);
+        user.setPassword("123456");
         if (userService.add(user)) {
             return JsonResult.ok("添加成功");
         } else {
@@ -75,10 +82,16 @@ public class UserController extends BaseController {
     })
     @PutMapping()
     public JsonResult update(User user, String roleId) {
+        if ("admin".equals(user.getUserId())) {
+            return JsonResult.error("演示系统不能操作admin");
+        }
         List<Role> roleIds = new ArrayList<>();
-        Role role = new Role();
-        role.setRoleId(roleId);
-        roleIds.add(role);
+        String[] split = roleId.split(",");
+        for (String t : split) {
+            Role role = new Role();
+            role.setRoleId(t);
+            roleIds.add(role);
+        }
         user.setRoles(roleIds);
         if (userService.update(user)) {
             return JsonResult.ok("修改成功");
@@ -134,6 +147,9 @@ public class UserController extends BaseController {
     })
     @PutMapping("/psw/{id}")
     public JsonResult resetPsw(@PathVariable("id") String userId) {
+        if ("admin".equals(userId)) {
+            return JsonResult.error("演示系统不能操作admin");
+        }
         if (userService.updatePsw(userId, "123456")) {
             return JsonResult.ok("重置成功");
         } else {

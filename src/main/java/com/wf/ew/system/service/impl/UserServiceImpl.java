@@ -46,9 +46,8 @@ public class UserServiceImpl implements UserService {
         if (!showDelete) {
             wrapper.eq("state", 0);
         }
-        Page<Object> userPage = new Page<>(pageNum, pageNum);
+        Page<User> userPage = new Page<>(pageNum, pageSize);
         List<User> userList = userMapper.selectPage(userPage, wrapper);
-        PageResult<User> result = new PageResult<>();
         // 查询user的角色
         List<String> userIds = new ArrayList<>();
         for (User one : userList) {
@@ -69,10 +68,7 @@ public class UserServiceImpl implements UserService {
             }
             one.setRoles(tempUrs);
         }
-        //
-        result.setData(userList);
-        result.setCount(userPage.getTotal());
-        return result;
+        return new PageResult<>(userPage.getTotal(), userList);
     }
 
     @Override
