@@ -3,7 +3,7 @@ layui.define(['config', 'layer', 'element', 'form'], function (exports) {
     var layer = layui.layer;
     var element = layui.element;
     var form = layui.form;
-    var popupRightIndex;
+    var popupRightIndex, popupCenterIndex, popupCenterParam;
 
     var admin = {
         // 路由加载组件
@@ -71,6 +71,40 @@ layui.define(['config', 'layer', 'element', 'form'], function (exports) {
         // 关闭右侧弹出
         closePopupRight: function () {
             layer.close(popupRightIndex);
+        },
+        // 中间弹出
+        popupCenter: function (param) {
+            popupCenterParam = param;
+            popupCenterIndex = layer.open({
+                type: 1,
+                id: 'adminPopupC',
+                title: param.title ? param.title : false,
+                shade: .1,
+                area: '450px',
+                offset: '120px',
+                skin: 'layui-layer-adminCenter',
+                success: function () {
+                    $('#adminPopupC').load(param.path, function () {
+                        $('#adminPopupC .close').click(function () {
+                            layer.close(popupCenterIndex);
+                        });
+                        param.success ? param.success() : '';
+                    });
+                },
+                end: function () {
+                    layer.closeAll('tips');
+                    param.end ? param.end() : '';
+                }
+            });
+        },
+        // 关闭中间弹出并且触发finish回调
+        finishPopupCenter: function () {
+            layer.close(popupCenterIndex);
+            popupCenterParam.finish ? popupCenterParam.finish() : '';
+        },
+        // 关闭中间弹出
+        closePopupCenter: function () {
+            layer.close(popupCenterIndex);
         },
         // 封装ajax请求
         req: function (url, data, success, method) {
@@ -141,6 +175,18 @@ layui.define(['config', 'layer', 'element', 'form'], function (exports) {
         // 移除加载动画
         removeLoading: function (element) {
             $(element + '>.admin-loading').remove();
+        },
+        // 缓存临时数据
+        putTempData: function (key, value) {
+            if (value) {
+                layui.sessionData('tempData', {key: key, value: value});
+            } else {
+                layui.sessionData('tempData', {key: key, remove: true});
+            }
+        },
+        // 获取缓存临时数据
+        getTempData: function (key) {
+            return layui.sessionData('tempData')[key];
         }
     };
 
