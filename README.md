@@ -10,11 +10,16 @@
 
 > 前后端分离模式的后端管理系统开发平台，前端使用路由实现单页面应用，后端接口遵循RESTful风格。
 
-* 演示地址：[http://47.98.107.251:8088/login.html](http://47.98.107.251:8088/login.html)
+* 演示地址：[http://47.98.107.251:8088/](http://47.98.107.251:8088/login.html)
 * 演示账号：admin &emsp;&emsp; 密码：admin 
 
-&emsp;&emsp;项目还在不断完善，大家可以在留言或评论中发表自己的看法，以便于我继续完善。&emsp;目前正在
-整理前端页面的说明文档，后台功能开发先暂停，因为前端封装了很多东西，没有文档说明不便于使用。
+
+* 静态页面演示地址： [https://whvse.gitee.io/easywebpage/](https://whvse.gitee.io/easywebpage/login.html)
+
+&emsp;&emsp;静态页面源代码地址：[EasyWebPage](https://gitee.com/whvse/EasyWebPage)，
+EasyWeb的后台目前也许并不那么完善，甚至只能当做学习的项目，一个完善的开发平台需要花很长时间来打磨，所以
+我先把页面分离出来，你们可以基于我的页面来搭自己的后台。&emsp;当然我仍在不断完善，大家可以在留言或
+评论中发表自己的看法，以便于我继续完善。
 
 
 ## 使用技术
