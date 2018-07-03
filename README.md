@@ -1,5 +1,6 @@
 # EasyWeb 2.0
 
+[TOC]
 
 ## 简介
 
@@ -203,6 +204,26 @@ mvvm框架 | [pandyle.js](https://gitee.com/pandarrr/pandyle) (专为jquery编�
 
 &emsp;&emsp;前端路由适合用在页面有公共区域的地方，只想改变局部内容，而且改变了局部内容url也对应变化，
 这样用户可以复制url再打开就直接进入到相应的页面了，管理系统页面的侧边导航就是一个很好的例子。
+
+---
+
+## 相关学习资料
+
+- [Spring Boot 从入门到进阶系列教程](http://www.spring4all.com/article/246)
+
+- [Spring Security 从入门到进阶系列教程](http://www.spring4all.com/article/428)
+- [理解OAuth 2.0 - 阮一峰](http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html)
+- [基于Token的WEB后台认证机制](https://www.cnblogs.com/xiekeli/p/5607107.html)
+- [Redis - 菜鸟教程](http://www.runoob.com/redis/redis-tutorial.html)
+- [RESTful API 设计指南](http://www.ruanyifeng.com/blog/2014/05/restful_api.html)
+- [使用Swagger2构建RESTful API](http://www.spring4all.com/article/251)
+- [Swagger2 - 注解详细说明](http://www.spring4all.com/article/251)
+- [SpringBoot - jar包 Linux后台启动](https://www.jianshu.com/p/5887e524de89)
+- [IDEA SpringBoot 热部署+html修改自动刷新](https://my.oschina.net/yejunxi/blog/845752)
+- [SpringBoot 多模块项目实践（附打包方法）](https://www.jianshu.com/p/59ceea4f029d)
+- [markdown基本语法](https://www.jianshu.com/p/191d1e21f7ed)
+
+ :smirk: 学如逆水行舟，不进则退~~~
 
 ---
 
