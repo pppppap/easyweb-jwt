@@ -62,13 +62,13 @@ mvvm框架 | [pandyle.js](https://gitee.com/pandarrr/pandyle) (专为jquery编�
     http {
         server {
             # 加入以下配置
-            location /api {
-                proxy_pass  http://47.98.107.251:8088;
+            location /api/ {
+                proxy_pass  http://47.98.107.251:8088; # 这个是后台接口所在的地址
             }
         }
     }
     ```
-3. 修改`module/config.js`里面的`base_url`为`http://localhost:80/api/`，80是ngix的端口
+3. 修改`module/config.js`里面的`base_url`为`http://localhost:80/api/`，80是ngix的端口，localhost是ngix所在服务器的ip
 
 > 前后端分离应该采用分离部署的方式，后台应该支持跨域资源共享，但是oauth2我刚接触，
 > 在做跨域的时候无法做到对`/oatuh/`接口的跨域，所以目前只能通过ngix的反向代理解决跨域的问题
