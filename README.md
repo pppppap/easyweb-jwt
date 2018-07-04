@@ -1,4 +1,4 @@
-# EasyWeb 2.0
+# EasyWeb
 
 |&emsp;[简介](#简介)&emsp; | &emsp;[使用技术](#使用技术)&emsp; | &emsp;[导入项目](#导入项目)&emsp; | &emsp;[项目结构](#项目结构)&emsp; | 
 &emsp;[数据库设计](#数据库设计)&emsp; | &emsp;[项目截图](#项目截图)&emsp; | &emsp;[项目优点](#项目优点)&emsp; | 
@@ -122,7 +122,7 @@ controller、dao、model、service、service.impl等包，然后再resource/mapp
 
 
 #### 前端快速上手
-&emsp;&emsp;关于前端页面的详细使用教程已经写在静态页面的项目里面了，请前往[EasyWebPage](https://gitee.com/whvse/EasyWebPage)查看！
+&emsp;&emsp;前端页面详细开发文档：[https://whvse.gitee.io/easywebpage/docs/](https://whvse.gitee.io/easywebpage/docs/)
 
 ### 前端结构
 ```
