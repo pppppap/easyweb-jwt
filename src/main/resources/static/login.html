@@ -88,7 +88,7 @@
         var config = layui.config;
 
         if (config.getToken()) {
-            location.replace('/');
+            location.replace('./');
             return;
         }
 
@@ -111,7 +111,7 @@
                     if (data.access_token) {
                         config.putToken(data);
                         layer.msg('登录成功', {icon: 1}, function () {
-                            location.replace('/');
+                            location.replace('./');
                         });
                     } else {
                         layer.closeAll('loading');
@@ -122,6 +122,8 @@
                     layer.closeAll('loading');
                     if (xhr.status == 400) {
                         layer.msg('账号或密码错误', {icon: 5});
+                    } else {
+                        layer.msg('登录失败，请按f12查看console错误信息', {icon: 5});
                     }
                 }
             });

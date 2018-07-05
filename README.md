@@ -21,6 +21,8 @@ EasyWeb的后台目前也许并不那么完善，甚至只能当做学习的项�
 我先把页面分离出来，你们可以基于我的页面来搭自己的后台。&emsp;当然我仍在不断完善，大家可以在留言或
 评论中发表自己的看法，以便于我继续完善。
 
+&emsp;&emsp;后台是JavaWeb项目，非Java人员（纯前端或其他后台语言）请到[EasyWebPage](https://gitee.com/whvse/EasyWebPage)
+下载静态页面使用，不要下载错了。
 
 ## 使用技术
 
@@ -110,7 +112,9 @@ mvvm框架 | [pandyle.js](https://gitee.com/pandarrr/pandyle) (专为jquery编�
 
 ### 快速上手
 #### 后台快速上手
-##### 如何添加自己的业务代码
+
+**如何添加自己的业务代码：**
+
 &emsp;&emsp;跟common、system同级建一个包，名字为你的业务模块名称，然后下面依次建
 controller、dao、model、service、service.impl等包，然后再resource/mapper下面也
 建一个模块文件夹，里面放mapper的xml文件。
