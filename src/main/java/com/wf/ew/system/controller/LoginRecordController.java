@@ -27,7 +27,7 @@ public class LoginRecordController {
             @ApiImplicitParam(name = "limit", value = "每页多少条", required = true, dataType = "Integer"),
             @ApiImplicitParam(name = "startDate", value = "开始时间，格式(yyyy-MM-dd)", dataType = "String"),
             @ApiImplicitParam(name = "endDate", value = "结束日期，格式(yyyy-MM-dd)", dataType = "Integer"),
-            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String")
     })
     @GetMapping()
     public PageResult<LoginRecord> list(Integer page, Integer limit, String startDate, String endDate, String account) {
