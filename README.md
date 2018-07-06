@@ -98,23 +98,6 @@ mvvm框架 | [pandyle.js](https://gitee.com/pandarrr/pandyle) (专为jquery编�
             |-application.properties  // 配置文件
 ```
 
-### 快速上手
-#### 后台快速上手
-
-**如何添加自己的业务代码：**
-
-&emsp;&emsp;跟common、system同级建一个包，名字为你的业务模块名称，然后下面依次建
-controller、dao、model、service、service.impl等包，然后再resource/mapper下面也
-建一个模块文件夹，里面放mapper的xml文件。
-
-- `mapper.xml` 扫描路径是`classpath:mapper/**/*Mapper.xml`
-- `druid` 的service扫描路径是 `com.wf.ew.*.service.*`
-- `mapper` 的扫描路径是 `com.wf.ew.*.dao` ，<br>
-   位于 `common/config/MybatisPlusConfig.java`
-
-
-#### 前端快速上手
-&emsp;&emsp;前端页面详细开发文档：[https://whvse.gitee.io/easywebpage/docs/](https://whvse.gitee.io/easywebpage/docs/)
 
 ### 前端结构
 ```
@@ -140,6 +123,27 @@ controller、dao、model、service、service.impl等包，然后再resource/mapp
 |-index.html            // 主界面
 |-login.html            // 登陆界面
 ```
+
+
+
+
+### 快速上手
+#### 后台快速上手
+
+**如何添加自己的业务代码：**
+
+&emsp;&emsp;跟common、system同级建一个包，名字为你的业务模块名称，然后下面依次建
+controller、dao、model、service、service.impl等包，然后再resource/mapper下面也
+建一个模块文件夹，里面放mapper的xml文件。
+
+- `mapper.xml` 扫描路径是`classpath:mapper/**/*Mapper.xml`
+- `druid` 的service扫描路径是 `com.wf.ew.*.service.*`
+- `mapper` 的扫描路径是 `com.wf.ew.*.dao` ，<br>
+   位于 `common/config/MybatisPlusConfig.java`
+
+
+#### 前端快速上手
+&emsp;&emsp;前端页面详细开发文档：[https://whvse.gitee.io/easywebpage/docs/](https://whvse.gitee.io/easywebpage/docs/)
 
 
 ## 项目截图
