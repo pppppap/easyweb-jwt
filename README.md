@@ -7,11 +7,11 @@
 * 演示地址：[http://47.98.107.251:8088/](http://47.98.107.251:8088/login.html)
 * 演示账号：admin &emsp;&emsp; 密码：admin 
 
+&emsp;&emsp;静态页面项目地址：[EasyWebPage](https://gitee.com/whvse/EasyWebPage)，
+静态页面演示地址： [https://whvse.gitee.io/easywebpage/](https://whvse.gitee.io/easywebpage/login.html)。
 
-* 静态页面演示地址： [https://whvse.gitee.io/easywebpage/](https://whvse.gitee.io/easywebpage/login.html)
-
-&emsp;&emsp;静态页面源代码地址：[EasyWebPage](https://gitee.com/whvse/EasyWebPage)
-
+&emsp;&emsp;EasyWeb也有前后端不分离版本，不分离版本项目地址：[easyweb-shiro](https://gitee.com/whvse/easyweb-shiro)，
+前后端分离版本上手难度大，可以用作学习项目，不分离版本上手较容易。
 
 
 ## 使用技术
