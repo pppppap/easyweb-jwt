@@ -9,10 +9,10 @@
 * 演示地址：[http://47.98.107.251:8088/](http://47.98.107.251:8088/login.html)
 * 演示账号：admin &emsp;&emsp; 密码：admin 
 
-&emsp;&emsp;静态页面项目地址：[EasyWebPage](https://gitee.com/whvse/EasyWebPage)，
+&emsp;静态页面项目地址：[EasyWebPage](https://gitee.com/whvse/EasyWebPage)，
 静态页面演示地址： [https://whvse.gitee.io/easywebpage/](https://whvse.gitee.io/easywebpage/login.html)。
 
-&emsp;&emsp;前后端不分离版本项目地址：[easyweb-shiro](https://gitee.com/whvse/easyweb-shiro)，
+&emsp;前后端不分离版本项目地址：[easyweb-shiro](https://gitee.com/whvse/easyweb-shiro)，
 前后端分离版本上手难度大，可以用作学习项目，不分离版本可以开箱即用。
 
 
@@ -21,9 +21,9 @@
 ### 后端
 描述 | 框架 
 :---|:---
-核心框架 | Spring、Spring MVC、Spring Boot
-持久层 | MyBatis、Druid、MyBatis-Plus
-权限框架 | Spring Security、OAuth2.0
+核心框架 | Spring、Spring Boot、Spring MVC
+持久层 | MyBatis、MyBatis-Plus、Druid
+权限框架 | Spring Security、Security-OAuth2
 
 ### 前端
 描述 | 框架 
@@ -64,14 +64,14 @@ mvvm框架 | [pandyle.js](https://gitee.com/pandarrr/pandyle) (专为jquery编�
     ```
 3. 修改`module/config.js`里面的`base_url`为`http://localhost:80/api/`，80是ngix的端口，localhost是ngix所在服务器的ip
 
-> 前后端分离应该采用分离部署的方式，后台应该支持跨域资源共享，但是oauth2我刚接触，
-> 在做跨域的时候无法做到对`/oatuh/`接口的跨域，所以目前只能通过ngix的反向代理解决跨域的问题
+> 前后端分离应该采用分离部署的方式，后台应该支持跨域资源共享，由于刚接触oauth2，
+> 在做跨域的时候无法做到对`/oatuh/`接口的跨域，所以目前只能通过ngix的反向代理解决跨域的问题。
 
 
 ## 项目结构
 
 ### 后台接构
-```
+```text
 |-src
    |-main
       |-java
@@ -102,7 +102,7 @@ mvvm框架 | [pandyle.js](https://gitee.com/pandarrr/pandyle) (专为jquery编�
 
 
 ### 前端结构
-```
+```text
 |-assets
 |     |-css                     // 样式
 |     |-images                  // 图片
@@ -125,8 +125,6 @@ mvvm框架 | [pandyle.js](https://gitee.com/pandarrr/pandyle) (专为jquery编�
 |-index.html            // 主界面
 |-login.html            // 登陆界面
 ```
-
-
 
 
 ### 快速上手
@@ -184,7 +182,9 @@ controller、dao、model、service、service.impl等包，然后再resource/mapp
 
 
 ## 联系方式
-### 1、欢迎加入“前后端分离技术交流群”：
+### 欢迎加入“前后端分离技术交流群”
+相互学习，共同进步！
+
 ![群二维码](https://ws1.sinaimg.cn/large/006a7GCKgy1fstbxycj1xj305k07m75h.jpg)
 
 
