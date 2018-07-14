@@ -4,14 +4,16 @@
 
 > 前后端分离模式的后端管理系统开发平台。
 
+<br>
+
 * 演示地址：[http://47.98.107.251:8088/](http://47.98.107.251:8088/login.html)
 * 演示账号：admin &emsp;&emsp; 密码：admin 
 
 &emsp;&emsp;静态页面项目地址：[EasyWebPage](https://gitee.com/whvse/EasyWebPage)，
 静态页面演示地址： [https://whvse.gitee.io/easywebpage/](https://whvse.gitee.io/easywebpage/login.html)。
 
-&emsp;&emsp;EasyWeb也有前后端不分离版本，不分离版本项目地址：[easyweb-shiro](https://gitee.com/whvse/easyweb-shiro)，
-前后端分离版本上手难度大，可以用作学习项目，不分离版本上手较容易。
+&emsp;&emsp;前后端不分离版本项目地址：[easyweb-shiro](https://gitee.com/whvse/easyweb-shiro)，
+前后端分离版本上手难度大，可以用作学习项目，不分离版本可以开箱即用。
 
 
 ## 使用技术
