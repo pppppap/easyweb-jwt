@@ -6,7 +6,7 @@
 
 <br>
 
-* 演示地址：[http://47.98.107.251:8089/](http://47.98.107.251:8089/)
+* 演示地址：[https://demo.easyweb.vip/](https://demo.easyweb.vip/iframe/)
 * 演示账号：admin &emsp;&emsp; 密码：admin 
 
 &emsp;静态页面项目地址：[EasyWebPage](https://gitee.com/whvse/EasyWebPage)，
