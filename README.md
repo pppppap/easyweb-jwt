@@ -9,13 +9,6 @@
 * 演示地址：[https://demo.easyweb.vip/](https://demo.easyweb.vip/iframe/)
 * 演示账号：admin &emsp;&emsp; 密码：admin 
 
-&emsp;静态页面项目地址：[EasyWebPage](https://gitee.com/whvse/EasyWebPage)，
-静态页面演示地址： [https://whvse.gitee.io/easywebpage/](https://whvse.gitee.io/easywebpage/login.html)。
-
-&emsp;前后端不分离版本项目地址：[easyweb-shiro](https://gitee.com/whvse/easyweb-shiro)，
-前后端分离版本上手难度大，可以用作学习项目，不分离版本可以开箱即用。
-
-
 ## 使用技术
 
 ### 后端
