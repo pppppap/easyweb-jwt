@@ -9,6 +9,10 @@
 * 演示地址：[https://demo.easyweb.vip/](https://demo.easyweb.vip/iframe/)
 * 演示账号：admin &emsp;&emsp; 密码：admin 
 
+如果对oauth2上手有难度可以再这里下载easyweb-shiro，这个不需要redis，前端也是路由单页面：[https://gitee.com/whvse/EasyWeb/attach_files](https://gitee.com/whvse/EasyWeb/attach_files)
+
+
+
 ## 使用技术
 
 ### 后端
@@ -35,6 +39,9 @@ mvvm框架 | [pandyle.js](https://gitee.com/pandarrr/pandyle) (专为jquery编�
 1. 开启redis(oauth2需要redis)、导入数据库
 2. 确认application.properties配置信息是否正确
 3. 在通过IDEA启动运行
+
+一点要开始redis，检查redis配置是否正确
+
 
 ### 前端导入和部署
 #### 不分离部署
