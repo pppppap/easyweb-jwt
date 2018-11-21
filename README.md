@@ -30,8 +30,6 @@
 这个项目是后台，全是接口，需要页面可以参考下面的模板：
 
 * 演示地址：[https://demo.easyweb.vip/](https://demo.easyweb.vip/iframe/)
-* 演示账号：admin &emsp;&emsp; 密码：admin 
-
 
 
 ## 项目结构
