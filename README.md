@@ -12,6 +12,8 @@
 如果对oauth2上手有难度可以再这里下载easyweb-shiro，这个不需要redis，前端也是路由单页面：[https://gitee.com/whvse/EasyWeb/attach_files](https://gitee.com/whvse/EasyWeb/attach_files)
 
 
+此为老版本，新版本已不再开源，前往[https://easyweb.vip](https://easyweb.vip)获取新版本。
+
 
 ## 使用技术
 
