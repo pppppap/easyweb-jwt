@@ -29,8 +29,8 @@ public class AuthoritiesController extends BaseController {
 
     @ApiOperation(value = "同步权限")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "json", value = "权限列表json", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String")
+            @ApiImplicitParam(name = "json", value = "权限列表json", required = true, dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
     @PostMapping("/sync")
     public JsonResult add(String json) {
@@ -60,8 +60,8 @@ public class AuthoritiesController extends BaseController {
 
     @ApiOperation(value = "查询所有权限")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "roleId", value = "角色id", dataType = "String"),
-            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String")
+            @ApiImplicitParam(name = "roleId", value = "角色id", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "query")
     })
     @GetMapping
     public PageResult<Map<String, Object>> list(String roleId) {
@@ -84,9 +84,9 @@ public class AuthoritiesController extends BaseController {
 
     @ApiOperation(value = "给角色添加权限")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "roleId", value = "角色id", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "authId", value = "权限id", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String")
+            @ApiImplicitParam(name = "roleId", value = "角色id", required = true, dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "authId", value = "权限id", required = true, dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
     @PostMapping("/role")
     public JsonResult addRoleAuth(String roleId, String authId) {
@@ -98,9 +98,9 @@ public class AuthoritiesController extends BaseController {
 
     @ApiOperation(value = "移除角色权限")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "roleId", value = "角色id", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "authId", value = "权限id", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String")
+            @ApiImplicitParam(name = "roleId", value = "角色id", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "authId", value = "权限id", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "query")
     })
     @DeleteMapping("/role")
     public JsonResult deleteRoleAuth(String roleId, String authId) {

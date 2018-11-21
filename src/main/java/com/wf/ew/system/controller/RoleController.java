@@ -24,7 +24,10 @@ public class RoleController {
     private RoleService roleService;
 
     @ApiOperation(value = "查询所有角色")
-    @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "keyword", value = "搜索关键字", required = false, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "query")
+    })
     @GetMapping()
     public PageResult<Role> list(String keyword) {
         List<Role> list = roleService.list(false);
@@ -44,8 +47,8 @@ public class RoleController {
 
     @ApiOperation(value = "添加角色")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "role", value = "角色信息", required = true, dataType = "Role"),
-            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String")
+            @ApiImplicitParam(name = "role", value = "角色信息", required = true, dataType = "Role", paramType = "form"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
     @PostMapping()
     public JsonResult add(Role role) {
@@ -58,8 +61,8 @@ public class RoleController {
 
     @ApiOperation(value = "修改角色")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "role", value = "角色信息", required = true, dataType = "Role"),
-            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String")
+            @ApiImplicitParam(name = "role", value = "角色信息", required = true, dataType = "Role", paramType = "form"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
     @PutMapping()
     public JsonResult update(Role role) {
@@ -73,7 +76,7 @@ public class RoleController {
     @ApiOperation(value = "删除角色")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "roleId", value = "角色id", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String")
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "query")
     })
     @DeleteMapping("/{id}")
     public JsonResult delete(@PathVariable("id") String roleId) {

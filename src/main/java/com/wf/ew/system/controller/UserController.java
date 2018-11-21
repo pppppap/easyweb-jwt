@@ -32,11 +32,11 @@ public class UserController extends BaseController {
      */
     @ApiOperation(value = "查询所有用户", notes = "")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "limit", value = "每页多少条", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "searchKey", value = "筛选条件字段", dataType = "String"),
-            @ApiImplicitParam(name = "searchValue", value = "筛选条件关键字", dataType = "String"),
-            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String")
+            @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer", paramType = "form"),
+            @ApiImplicitParam(name = "limit", value = "每页多少条", required = true, dataType = "Integer", paramType = "form"),
+            @ApiImplicitParam(name = "searchKey", value = "筛选条件字段", dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "searchValue", value = "筛选条件关键字", dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
     @PostMapping("/query")
     public PageResult<User> list(Integer page, Integer limit, String searchKey, String searchValue) {
@@ -52,9 +52,9 @@ public class UserController extends BaseController {
 
     @ApiOperation(value = "添加用户", notes = "")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "user", value = "用户信息", required = true, dataType = "User"),
-            @ApiImplicitParam(name = "roleId", value = "用户角色id，多个用','分割", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String")
+            @ApiImplicitParam(name = "user", value = "用户信息", required = true, dataType = "User", paramType = "form"),
+            @ApiImplicitParam(name = "roleId", value = "用户角色id，多个用','分割", required = true, dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
     @PostMapping()
     public JsonResult add(User user, String roleId) {
@@ -76,9 +76,9 @@ public class UserController extends BaseController {
 
     @ApiOperation(value = "修改用户", notes = "")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "user", value = "用户信息", required = true, dataType = "User"),
-            @ApiImplicitParam(name = "roleId", value = "用户角色id", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String")
+            @ApiImplicitParam(name = "user", value = "用户信息", required = true, dataType = "User", paramType = "form"),
+            @ApiImplicitParam(name = "roleId", value = "用户角色id", required = true, dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
     @PutMapping()
     public JsonResult update(User user, String roleId) {
@@ -102,9 +102,9 @@ public class UserController extends BaseController {
 
     @ApiOperation(value = "修改用户状态", notes = "")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "用户id", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "state", value = "状态：0正常，1冻结", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String")
+            @ApiImplicitParam(name = "userId", value = "用户id", required = true, dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "state", value = "状态：0正常，1冻结", required = true, dataType = "Integer", paramType = "form"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
     @PutMapping("/state")
     public JsonResult updateState(String userId, Integer state) {
@@ -120,9 +120,9 @@ public class UserController extends BaseController {
 
     @ApiOperation(value = "修改自己密码", notes = "")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "oldPsw", value = "原密码", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "newPsw", value = "新密码", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String")
+            @ApiImplicitParam(name = "oldPsw", value = "原密码", required = true, dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "newPsw", value = "新密码", required = true, dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
     @PutMapping("/psw")
     public JsonResult updatePsw(String oldPsw, String newPsw) {
@@ -143,7 +143,7 @@ public class UserController extends BaseController {
     @ApiOperation(value = "重置密码", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户id", required = true, dataType = "String", paramType = "path"),
-            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String")
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
     @PutMapping("/psw/{id}")
     public JsonResult resetPsw(@PathVariable("id") String userId) {

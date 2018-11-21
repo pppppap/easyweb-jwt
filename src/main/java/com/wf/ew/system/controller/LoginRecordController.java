@@ -23,11 +23,12 @@ public class LoginRecordController {
 
     @ApiOperation(value = "查询所有登录日志")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "limit", value = "每页多少条", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "startDate", value = "开始时间，格式(yyyy-MM-dd)", dataType = "String"),
-            @ApiImplicitParam(name = "endDate", value = "结束日期，格式(yyyy-MM-dd)", dataType = "Integer"),
-            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String")
+            @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer", paramType = "query"),
+            @ApiImplicitParam(name = "limit", value = "每页多少条", required = true, dataType = "Integer", paramType = "query"),
+            @ApiImplicitParam(name = "startDate", value = "开始时间，格式(yyyy-MM-dd)", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "endDate", value = "结束日期，格式(yyyy-MM-dd)", dataType = "Integer", paramType = "query"),
+            @ApiImplicitParam(name = "account", value = "账号", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "query")
     })
     @GetMapping()
     public PageResult<LoginRecord> list(Integer page, Integer limit, String startDate, String endDate, String account) {
