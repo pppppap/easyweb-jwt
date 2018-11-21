@@ -23,6 +23,7 @@
 1. 开启redis(oauth2需要redis)、导入数据库
 2. 确认application.properties配置信息是否正确
 3. 在通过IDEA启动运行
+4. 浏览器访问http://localhost:8088/
 
 
 ## 前端页面
