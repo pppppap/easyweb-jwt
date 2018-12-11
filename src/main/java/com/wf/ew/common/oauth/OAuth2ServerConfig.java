@@ -21,13 +21,13 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
  * OAuth2配置
  * Created by wangfan on 2018-02-22 上午 11:29.
  */
-@Configuration
+// @Configuration
 public class OAuth2ServerConfig {
-    private static final String RESOURCE_ID = "api";  //资源ID
+   /* private static final String RESOURCE_ID = "api";  //资源ID
 
-    /**
+    *//**
      * 资源服务器
-     */
+     *//*
     @Configuration
     @EnableResourceServer
     protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
@@ -49,9 +49,9 @@ public class OAuth2ServerConfig {
         }
     }
 
-    /**
+    *//**
      * 授权服务器
-     */
+     *//*
     @Configuration
     @EnableAuthorizationServer
     protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
@@ -92,6 +92,6 @@ public class OAuth2ServerConfig {
             oauthServer.allowFormAuthenticationForClients();  //允许表单认证
         }
 
-    }
+    }*/
 
 }
