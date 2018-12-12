@@ -21,7 +21,7 @@ import java.util.List;
 
 @Api(value = "用户相关的接口", tags = "user")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("${ew.api.version}/user")
 public class UserController extends BaseController {
     @Autowired
     private UserService userService;

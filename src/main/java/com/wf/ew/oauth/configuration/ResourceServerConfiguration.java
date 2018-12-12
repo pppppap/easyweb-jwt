@@ -23,8 +23,8 @@ import java.util.function.Consumer;
 @EnableResourceServer
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter implements ApplicationContextAware {
     public static final String RESOURCE_NAME = "watchdog";
-    @Value("${watchdog.oauth2.protect.path:/api/**}")
-    private Set<String> apiPrefPath;
+    @Value("${ew.api.version}/**")
+    private String apiPrefPath;
     private ApplicationContext applicationContext;
 
     @Override
@@ -34,18 +34,15 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        String[] needAuthenticationPaths = apiPrefPath.toArray(new String[apiPrefPath.size()]);
-        apiPrefPath.add("/applications");
-        apiPrefPath.add("/applications/**");
         http
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
-                .requestMatchers().antMatchers(apiPrefPath.toArray(new String[apiPrefPath.size()]))
-                .and()
                 .authorizeRequests()
-                .antMatchers("/oauth/**", "/applications", "/applications/**", "/druid/**")
-                .permitAll().antMatchers(needAuthenticationPaths).authenticated()
+                .antMatchers("/oauth/**")
+                .permitAll()
+                .antMatchers(apiPrefPath)
+                .authenticated()
                 .and()
                 .csrf()
                 .disable();

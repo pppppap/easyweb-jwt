@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Api(value = "角色相关的接口", tags = "role")
 @RestController
-@RequestMapping("/role")
+@RequestMapping("${ew.api.version}/role")
 public class RoleController {
     @Autowired
     private RoleService roleService;

@@ -65,7 +65,6 @@ public class PageResult<T> {
 
     public void setData(List<T> data) {
         this.data = data;
-        this.count = data.size();
     }
 
 }

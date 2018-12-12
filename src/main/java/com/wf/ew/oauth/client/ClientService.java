@@ -70,4 +70,12 @@ public class ClientService implements ClientDetailsService, ClientRegistrationSe
         });
         return clientDetails;
     }
+
+    public List<Client> findAll() {
+        return clientMapper.findAll();
+    }
+
+    public Client findByClientId(String clientId) {
+        return clientMapper.findByClientId(clientId);
+    }
 }

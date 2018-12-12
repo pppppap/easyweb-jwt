@@ -33,7 +33,7 @@ public class SwaggerConfig {
                 .description("获取token到此界面 http://localhost:8088/login.html")
                 .termsOfServiceUrl("")
                 .contact("https://easyweb.vip")
-                .version("2.0")
+                .version("1.0")
                 .build();
     }
 }

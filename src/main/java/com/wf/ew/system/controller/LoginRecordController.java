@@ -16,7 +16,7 @@ import com.wf.ew.system.service.LoginRecordService;
 
 @Api(value = "登录日志相关的接口", tags = "loginRecord")
 @RestController
-@RequestMapping("/loginRecord")
+@RequestMapping("${ew.api.version}/loginRecord")
 public class LoginRecordController {
     @Autowired
     private LoginRecordService loginRecordService;
