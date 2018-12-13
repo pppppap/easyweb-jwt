@@ -1,4 +1,4 @@
-package com.wf.ew.oauth.endpoint.support;
+package com.wf.ew.system.model;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME)
 @Target(value = {java.lang.annotation.ElementType.TYPE})
 @Documented
-@Import({ResourceServerConfiguration.class, AuthorizationServerConfiguration.class, EndpointsConfiguration.class})
+@Import({ResourceServerConfiguration.class, AuthorizationServerConfiguration.class})
 @EnableWebSecurity
 public @interface EnableOAuthClient {
 

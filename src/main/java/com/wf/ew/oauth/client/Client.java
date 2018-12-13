@@ -12,17 +12,19 @@ import java.util.UUID;
  * Created by wangfan on 2018-12-11 下午 3:07.
  */
 public class Client extends BaseClientDetails implements ClientDetails {
-    private String name;
+    @JsonProperty("client_name")
+    @com.fasterxml.jackson.annotation.JsonProperty("client_name")
+    private String clientName;
     @JsonProperty("raw_client_secret")
     @com.fasterxml.jackson.annotation.JsonProperty("raw_client_secret")
     private String rawClientSecret;
 
-    public String getName() {
-        return name;
+    public String getClientName() {
+        return clientName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public String getRawClientSecret() {
@@ -49,9 +51,9 @@ public class Client extends BaseClientDetails implements ClientDetails {
         super(clientId, resourceIds, scopes, grantTypes, authorities, redirectUris);
     }
 
-    public Client(String clientId, String resourceIds, Set<String> scopes, Set<String> redirectUris, String name) {
+    public Client(String clientId, String resourceIds, Set<String> scopes, Set<String> redirectUris, String clientName) {
         super(clientId, resourceIds, "", "password,refresh_token,client_credentials", "CLIENT", "");
-        this.name = name;
+        this.clientName = clientName;
         setScope(scopes);
         setRegisteredRedirectUri(redirectUris);
         setClientSecret(UUID.randomUUID().toString());

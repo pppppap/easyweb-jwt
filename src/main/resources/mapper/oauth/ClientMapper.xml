@@ -13,7 +13,7 @@
           refresh_token_validity,
           additional_information,
           autoapprove,
-          name,
+          client_name,
           raw_client_secret,
           client_id
       ) values (
@@ -26,7 +26,7 @@
           #{refreshTokenValidity},
           #{additionalInformation},
           #{autoapprove},
-          #{name},
+          #{client_name},
           #{rawClientSecret},
           #{clientId}
       )
@@ -47,13 +47,13 @@
       refresh_token_validity = #{refreshTokenValidity},
       additional_information = #{additionalInformation},
       autoapprove = #{autoapprove},
-      name = #{name},
+      client_name = #{client_name},
       raw_client_secret = #{rawClientSecret}
       where client_id = #{clientId}
     </update>
 
     <select id="findAll" resultType="com.wf.ew.oauth.client.Client">
-      select * from from oauth_client_details order by client_id
+      select * from oauth_client_details order by client_id
     </select>
 
     <delete id="delete">
