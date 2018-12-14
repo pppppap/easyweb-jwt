@@ -8,18 +8,20 @@ import java.util.Set;
  */
 public class ClientParam {
     public final static String DEFAULT_REDIRECT_URL = "urn:ietf:wg:oauth:2.0:oob";
-    private String name;
+    @org.codehaus.jackson.annotate.JsonProperty("client_name")
+    @com.fasterxml.jackson.annotation.JsonProperty("client_name")
+    private String clientName;
     private Set<String> scope;
     @org.codehaus.jackson.annotate.JsonProperty("redirect_uri")
     @com.fasterxml.jackson.annotation.JsonProperty("redirect_uri")
     private Set<String> redirectUri;
 
-    public String getName() {
-        return name;
+    public String getClientName() {
+        return clientName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public Set<String> getRedirectUri() {

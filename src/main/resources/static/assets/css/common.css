@@ -69,4 +69,8 @@ html, body {
 /*.layui-fluid {
     padding: 15px;
 }*/
+.text-right {
+    text-align: right;
+}
+
 /** //公共样式结束 */

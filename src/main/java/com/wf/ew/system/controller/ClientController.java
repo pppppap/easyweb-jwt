@@ -42,7 +42,7 @@ public class ClientController {
                 ResourceServerConfiguration.RESOURCE_NAME,
                 param.getScope(),
                 param.getRedirectUri(),
-                param.getName()
+                param.getClientName()
         );
         clientService.addClientDetails(client);
         return JsonResult.ok("add success");
@@ -62,8 +62,8 @@ public class ClientController {
             throw new NoSuchClientException("Not Found The Client.");
         }
         param.populateDefault();
-        if (!StringUtils.isEmpty(param.getName())) {
-            client.setClientName(param.getName());
+        if (!StringUtils.isEmpty(param.getClientName())) {
+            client.setClientName(param.getClientName());
         }
         if (param.getRedirectUri() != null) {
             client.setRegisteredRedirectUri(param.getRedirectUri());
