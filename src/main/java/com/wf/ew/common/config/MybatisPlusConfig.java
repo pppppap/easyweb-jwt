@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @EnableTransactionManagement
 @Configuration
-@MapperScan({"com.wf.ew.*.dao", "com.wf.ew.oauth.client"})
+@MapperScan("com.wf.ew.*.dao")
 public class MybatisPlusConfig {
 
     /**

@@ -44,8 +44,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .antMatchers(apiPrefPath)
                 .authenticated()
                 .and()
-                .csrf()
-                .disable();
+                .headers().frameOptions().sameOrigin()
+                .and()
+                .csrf().disable();
         registerWatchdogProvider(http.authorizeRequests());
     }
 

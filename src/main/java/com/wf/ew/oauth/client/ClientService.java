@@ -13,13 +13,13 @@ import java.util.function.Consumer;
  */
 public class ClientService implements ClientDetailsService, ClientRegistrationService {
     @Autowired
-    private ClientMapper clientMapper;
+    private ClientDao clientDao;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
-        Client client = clientMapper.findByClientId(clientId);
+        Client client = clientDao.findByClientId(clientId);
         if (client == null) {
             throw new NoSuchClientException("No client with requested id: " + clientId);
         }
@@ -28,16 +28,16 @@ public class ClientService implements ClientDetailsService, ClientRegistrationSe
 
     @Override
     public void addClientDetails(ClientDetails clientDetails) throws ClientAlreadyExistsException {
-        if (clientMapper.findByClientId(clientDetails.getClientId()) != null) {
+        if (clientDao.findByClientId(clientDetails.getClientId()) != null) {
             throw new ClientAlreadyExistsException("The client already exists");
         }
-        clientMapper.save(clientDetails);
+        clientDao.save(clientDetails);
     }
 
     @Override
     public void updateClientDetails(ClientDetails clientDetails) throws NoSuchClientException {
-        if (clientMapper.findByClientId(clientDetails.getClientId()) != null) {
-            clientMapper.update(clientDetails);
+        if (clientDao.findByClientId(clientDetails.getClientId()) != null) {
+            clientDao.update(clientDetails);
         } else {
             throw new NoSuchClientException("Not Found The Client.");
         }
@@ -45,10 +45,10 @@ public class ClientService implements ClientDetailsService, ClientRegistrationSe
 
     @Override
     public void updateClientSecret(String clientId, String secret) throws NoSuchClientException {
-        Client client = clientMapper.findByClientId(clientId);
+        Client client = clientDao.findByClientId(clientId);
         if (client != null) {
             client.setClientSecret(passwordEncoder.encode(secret));
-            clientMapper.update(client);
+            clientDao.update(client);
         } else {
             throw new NoSuchClientException("Not Found The Client.");
         }
@@ -56,13 +56,13 @@ public class ClientService implements ClientDetailsService, ClientRegistrationSe
 
     @Override
     public void removeClientDetails(String clientId) throws NoSuchClientException {
-        clientMapper.delete(clientId);
+        clientDao.delete(clientId);
     }
 
     @Override
     public List<ClientDetails> listClientDetails() {
         List<ClientDetails> clientDetails = new ArrayList<>();
-        clientMapper.findAll().forEach(new Consumer<Client>() {
+        clientDao.findAll().forEach(new Consumer<Client>() {
             @Override
             public void accept(Client client) {
                 clientDetails.add(client);
@@ -72,10 +72,10 @@ public class ClientService implements ClientDetailsService, ClientRegistrationSe
     }
 
     public List<Client> findAll() {
-        return clientMapper.findAll();
+        return clientDao.findAll();
     }
 
     public Client findByClientId(String clientId) {
-        return clientMapper.findByClientId(clientId);
+        return clientDao.findByClientId(clientId);
     }
 }

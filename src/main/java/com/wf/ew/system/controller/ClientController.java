@@ -35,7 +35,7 @@ public class ClientController {
 
     // 添加
     @PostMapping()
-    public JsonResult add(@RequestBody ClientParam param) {
+    public JsonResult add(ClientParam param) {
         param.populateDefault();
         Client client = new Client(
                 UUID.randomUUID().toString(),
@@ -56,7 +56,7 @@ public class ClientController {
 
     // 修改
     @PutMapping("/{clientId}")
-    public JsonResult update(@PathVariable String clientId, @RequestBody ClientParam param) {
+    public JsonResult update(@PathVariable String clientId, ClientParam param) {
         Client client = clientService.findByClientId(clientId);
         if (client == null) {
             throw new NoSuchClientException("Not Found The Client.");

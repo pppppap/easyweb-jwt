@@ -7,16 +7,16 @@ import java.util.List;
 /**
  * Created by wangfan on 2018-12-11 下午 3:11.
  */
-public interface ClientMapper {
-    Client save(ClientDetails t);
+public interface ClientDao {
+    int save(ClientDetails client);
 
     Client findByClientId(String clientId);
 
-    Client update(ClientDetails t);
+    int update(ClientDetails client);
 
     List<Client> findAll();
 
     // List<T> findAll(int pageNo, int pageSize);
 
-    void delete(String clientId);
+    int delete(String clientId);
 }

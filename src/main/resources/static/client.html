@@ -24,7 +24,7 @@
 
 <!-- 表单页面 -->
 <script type="text/html" id="clientForm">
-    <form class="layui-form" lay-filter="clientForm">
+    <form class="layui-form model-form" lay-filter="clientForm">
         <div class="layui-form-item">
             <label class="layui-form-label">客户端名称</label>
             <div class="layui-input-block">
@@ -34,12 +34,13 @@
         </div>
         <div class="layui-form-item text-right">
             <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
-            <button class="layui-btn" lay-filter="btnClientSubmit" lay-submit>保存</button>
+            <button type="button" class="layui-btn" lay-filter="btnClientSubmit" lay-submit>保存</button>
         </div>
     </form>
 </script>
 <!-- 表格操作列 -->
 <script type="text/html" id="clientTableBar">
+    <a class="layui-btn layui-btn-xs" lay-event="show">详情</a>
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
@@ -66,11 +67,29 @@
                 {type: 'checkbox'},
                 {field: 'client_name', sort: true, title: '客户端'},
                 {field: 'client_id', sort: true, title: 'client_id'},
-                {field: 'raw_client_secret', sort: true, title: 'client_secret'},
-                /*{field: 'scope', sort: true, title: 'scope'},
-                {field: 'web_server_redirect_uri', sort: true, title: 'redirect_uri'},*/
-                {toolbar: '#clientTableBar', align: 'center', title: '操作', minWidth: 150}
-            ]]
+                {
+                    title: 'Scope', templet: function (d) {
+                        var str = '';
+                        for (var i = 0; i < d.scope.length; i++) {
+                            str += ('<span class="layui-badge-rim">' + d.scope[i] + '</span>');
+                        }
+                        return str;
+                    }
+                },
+                {
+                    title: 'Redirect_Uri', templet: function (d) {
+                        var str = '';
+                        for (var i = 0; i < d.redirect_uri.length; i++) {
+                            str += ('<span class="layui-badge-rim">' + d.redirect_uri[i] + '</span>');
+                        }
+                        return str;
+                    }
+                },
+                {toolbar: '#clientTableBar', align: 'center', title: '操作', width: 180, minWidth: 180}
+            ]],
+            response: {
+                statusCode: 200
+            }
         });
 
         // 添加按钮点击事件
@@ -127,21 +146,15 @@
                     // 表单提交事件
                     form.on('submit(btnClientSubmit)', function (d) {
                         layer.load(2);
-                        $.ajax({
-                            url: base_server + 'oauth/client' + data ? ('/' + data.client_id) : '',
-                            data: data.field,
-                            type: data ? 'PUT' : 'POST',
-                            dataType: 'JSON',
-                            success: function (data) {
-                                layer.closeAll('loading');
-                                if (data.code == 200) {
-                                    layer.msg(data.msg, {icon: 1});
-                                    table.reload('clientTable');
-                                } else {
-                                    layer.msg(data.msg, {icon: 2});
-                                }
+                        req('oauth/client' + (data ? ('/' + data.client_id) : ''), d.field, function (data) {
+                            layer.closeAll('loading');
+                            if (data.code == 200) {
+                                layer.msg(data.msg, {icon: 1});
+                                table.reload('clientTable');
+                            } else {
+                                layer.msg(data.msg, {icon: 2});
                             }
-                        });
+                        }, data ? 'PUT' : 'POST');
                         return false;
                     });
                 }

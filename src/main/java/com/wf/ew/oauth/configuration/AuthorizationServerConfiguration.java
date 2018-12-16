@@ -1,10 +1,13 @@
 package com.wf.ew.oauth.configuration;
 
+import com.wf.ew.oauth.client.ClientDao;
+import com.wf.ew.oauth.client.ClientDaoImpl;
 import com.wf.ew.oauth.client.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -28,6 +31,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     private DataSource dataSource;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Bean
     public TokenStore tokenStore() {
@@ -55,4 +60,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         return new ClientService();
     }
 
+    @Bean
+    @ConditionalOnMissingBean
+    public ClientDao clientDao() {
+        return new ClientDaoImpl(dataSource, passwordEncoder);
+    }
 }
