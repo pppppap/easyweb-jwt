@@ -67,3 +67,20 @@ function getAjaxHeaders() {
     });
     return headers;
 }
+
+function closeDialog(elem) {
+    var id = layui.$(elem).parents('.layui-layer').attr('id').substring(11);
+    layui.layer.close(id);
+}
+
+layui.use(['jquery'], function () {
+    var $ = layui.jquery;
+
+    // 所有ew-event
+    $('body').on('click', '*[ew-event]', function () {
+        var event = $(this).attr('ew-event');
+        if (event == 'closeDialog') {
+            closeDialog.call(this, $(this))
+        }
+    });
+});

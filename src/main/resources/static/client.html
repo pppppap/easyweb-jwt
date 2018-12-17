@@ -9,6 +9,7 @@
     <link rel="icon" href="assets/images/favicon.ico"/>
     <link rel="stylesheet" href="assets/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="assets/css/common.css" media="all">
+    <link rel="stylesheet" href="assets/tagsinput/jquery.tagsinput-revisited.min.css" media="all">
 </head>
 
 <body>
@@ -17,7 +18,7 @@
     <div class="layui-card">
         <div class="layui-card-body">
             <div>
-                <button class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+                <button id="clientBtnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加客户端</button>
             </div>
 
             <table id="clientTable" lay-filter="clientTable" class="layui-table"></table>
@@ -37,22 +38,17 @@
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">RedirectUri:</label>
-            <div class="layui-input-block" style="min-height: auto;padding: 7px 0;">
-                <input id="redirectUri" name="redirect_uri" type="hidden">
-                <button type="button" class="layui-btn layui-btn-primary layui-btn-xs">
-                    <i class="layui-icon">&#xe654;</i>New
-                </button>
+            <div class="layui-input-block">
+                <input name="redirect_uri" type="text" class="layui-input"
+                       maxlength="40" lay-verify="required" required/>
             </div>
-            <div class="layui-form-mid layui-word-aux">默认为"urn:ietf:wg:oauth:2.0:oob"</div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">Scope:</label>
-            <div class="layui-input-block" style="min-height: auto;padding: 7px 0;">
-                <button type="button" class="layui-btn layui-btn-primary layui-btn-xs">
-                    <i class="layui-icon">&#xe654;</i>New
-                </button>
+            <div class="layui-input-block">
+                <input name="scope" type="text" class="layui-input"
+                       maxlength="40" lay-verify="required" required/>
             </div>
-            <div class="layui-form-mid layui-word-aux">默认为"DEFAULT"</div>
         </div>
         <div class="layui-form-item text-right" style="margin-bottom: 25px;">
             <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
@@ -66,8 +62,10 @@
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
+<script type="text/javascript" src="assets/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="assets/layui/layui.js"></script>
 <script type="text/javascript" src="assets/js/common.js"></script>
+<script type="text/javascript" src="assets/tagsinput/jquery.tagsinput-revisited.min.js"></script>
 <script>
     layui.use(['layer', 'form', 'table', 'util'], function () {
         var $ = layui.jquery;
@@ -136,24 +134,17 @@
             layer.confirm('确定删除此客户端吗？', function (i) {
                 layer.close(i);
                 layer.load(2);
-                $.ajax({
-                    url: base_server + 'oauth/client',
-                    data: {
-                        client_id: client_id,
-                        access_token: getToken().access_token
-                    },
-                    type: 'DELETE',
-                    dataType: 'JSON',
-                    success: function (data) {
-                        layer.closeAll('loading');
-                        if (data.code == 200) {
-                            layer.msg(data.msg, {icon: 1});
-                            table.reload('clientTable');
-                        } else {
-                            layer.msg(data.msg, {icon: 2});
-                        }
+                req('oauth/client', {
+                    client_id: client_id
+                }, function (data) {
+                    layer.closeAll('loading');
+                    if (data.code == 200) {
+                        layer.msg(data.msg, {icon: 1});
+                        table.reload('clientTable');
+                    } else {
+                        layer.msg(data.msg, {icon: 2});
                     }
-                });
+                }, 'DELETE');
             });
         }
 
@@ -161,23 +152,37 @@
         function showEditModel(data) {
             layer.open({
                 type: 1,
-                title: data ? '修改' : '添加',
+                title: data ? '修改' : '添加' + '客户端',
                 area: '360px',
                 content: $('#clientForm').html(),
                 success: function () {
                     form.val('clientForm', data);
+                    $('input[name=redirect_uri]').tagsInput({
+                        placeholder: '+New'
+                    });
+                    $('input[name=scope]').tagsInput({
+                        placeholder: '+New'
+                    });
                     // 表单提交事件
                     form.on('submit(btnClientSubmit)', function (d) {
                         layer.load(2);
-                        req('oauth/client' + (data ? ('/' + data.client_id) : ''), d.field, function (data) {
-                            layer.closeAll('loading');
-                            if (data.code == 200) {
-                                layer.msg(data.msg, {icon: 1});
-                                table.reload('clientTable');
-                            } else {
-                                layer.msg(data.msg, {icon: 2});
+                        var object = new Object();
+                        object.client_name = d.field.client_name;
+                        ajax({
+                            url: base_server + 'oauth/client' + (data ? ('/' + data.client_id) : ''),
+                            type: data ? 'PUT' : 'POST',
+                            dataType: 'json',
+                            data: JSON.stringify(object),
+                            success: function (data) {
+                                layer.closeAll('loading');
+                                if (data.code == 200) {
+                                    layer.msg(data.msg, {icon: 1});
+                                    table.reload('clientTable');
+                                } else {
+                                    layer.msg(data.msg, {icon: 2});
+                                }
                             }
-                        }, data ? 'PUT' : 'POST');
+                        });
                         return false;
                     });
                 }

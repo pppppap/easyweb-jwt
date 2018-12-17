@@ -27,15 +27,12 @@ public class ClientController {
     @GetMapping()
     public JsonResult list() {
         List<Client> clientList = clientService.findAll();
-        System.out.println("-------------------------------");
-        System.out.println(JSON.toJSONString(clientList));
-        System.out.println("-------------------------------");
         return JsonResult.ok("query success").put("data", clientList);
     }
 
     // 添加
     @PostMapping()
-    public JsonResult add(ClientParam param) {
+    public JsonResult add(@RequestBody ClientParam param) {
         param.populateDefault();
         Client client = new Client(
                 UUID.randomUUID().toString(),
@@ -56,7 +53,7 @@ public class ClientController {
 
     // 修改
     @PutMapping("/{clientId}")
-    public JsonResult update(@PathVariable String clientId, ClientParam param) {
+    public JsonResult update(@PathVariable String clientId, @RequestBody ClientParam param) {
         Client client = clientService.findByClientId(clientId);
         if (client == null) {
             throw new NoSuchClientException("Not Found The Client.");
