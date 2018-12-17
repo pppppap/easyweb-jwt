@@ -16,6 +16,9 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body">
+            <div>
+                <button class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+            </div>
 
             <table id="clientTable" lay-filter="clientTable" class="layui-table"></table>
         </div>
@@ -26,13 +29,32 @@
 <script type="text/html" id="clientForm">
     <form class="layui-form model-form" lay-filter="clientForm">
         <div class="layui-form-item">
-            <label class="layui-form-label">客户端名称</label>
+            <label class="layui-form-label lable-require">客户端名称:</label>
             <div class="layui-input-block">
-                <input name="client_name" placeholder="请输入客户端名称" type="text" class="layui-input" maxlength="40"
-                       lay-verify="required" required/>
+                <input name="client_name" placeholder="请输入客户端名称" type="text" class="layui-input"
+                       maxlength="40" lay-verify="required" required/>
             </div>
         </div>
-        <div class="layui-form-item text-right">
+        <div class="layui-form-item">
+            <label class="layui-form-label">RedirectUri:</label>
+            <div class="layui-input-block" style="min-height: auto;padding: 7px 0;">
+                <input id="redirectUri" name="redirect_uri" type="hidden">
+                <button type="button" class="layui-btn layui-btn-primary layui-btn-xs">
+                    <i class="layui-icon">&#xe654;</i>New
+                </button>
+            </div>
+            <div class="layui-form-mid layui-word-aux">默认为"urn:ietf:wg:oauth:2.0:oob"</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">Scope:</label>
+            <div class="layui-input-block" style="min-height: auto;padding: 7px 0;">
+                <button type="button" class="layui-btn layui-btn-primary layui-btn-xs">
+                    <i class="layui-icon">&#xe654;</i>New
+                </button>
+            </div>
+            <div class="layui-form-mid layui-word-aux">默认为"DEFAULT"</div>
+        </div>
+        <div class="layui-form-item text-right" style="margin-bottom: 25px;">
             <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
             <button type="button" class="layui-btn" lay-filter="btnClientSubmit" lay-submit>保存</button>
         </div>
@@ -65,8 +87,8 @@
             cellMinWidth: 100,
             cols: [[
                 {type: 'checkbox'},
-                {field: 'client_name', sort: true, title: '客户端'},
-                {field: 'client_id', sort: true, title: 'client_id'},
+                {field: 'client_id', title: 'client_id'},
+                {field: 'client_name', title: '客户端'},
                 {
                     title: 'Scope', templet: function (d) {
                         var str = '';
@@ -140,6 +162,7 @@
             layer.open({
                 type: 1,
                 title: data ? '修改' : '添加',
+                area: '360px',
                 content: $('#clientForm').html(),
                 success: function () {
                     form.val('clientForm', data);
