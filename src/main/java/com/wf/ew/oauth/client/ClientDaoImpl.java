@@ -1,5 +1,6 @@
 package com.wf.ew.oauth.client;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -57,7 +58,7 @@ public class ClientDaoImpl implements ClientDao {
     public int save(ClientDetails client) {
         List<Object> objects = getFieldsForUpdate(client);
         objects.add(0, client.getClientSecret() != null ? passwordEncoder.encode(client.getClientSecret()) : null);
-        return jdbcTemplate.update(SQL_INSERT, objects);
+        return jdbcTemplate.update(SQL_INSERT, listToArray(objects));
     }
 
     @Override
@@ -73,7 +74,7 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public int update(ClientDetails client) {
-        int count = jdbcTemplate.update(SQL_UPDATE, getFieldsForUpdate(client));
+        int count = jdbcTemplate.update(SQL_UPDATE, listToArray(getFieldsForUpdate(client)));
         if (count <= 0) {
             throw new NoSuchClientException("No client found with id = " + client.getClientId());
         }
@@ -127,6 +128,17 @@ public class ClientDaoImpl implements ClientDao {
         objects.add(((Client) client).getClientName());
         objects.add(((Client) client).getRawClientSecret());
         objects.add(client.getClientId());
+        return objects;
+    }
+
+    private Object[] listToArray(List<Object> list) {
+        if (list == null) {
+            return null;
+        }
+        Object[] objects = new Object[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            objects[i] = list.get(i);
+        }
         return objects;
     }
 

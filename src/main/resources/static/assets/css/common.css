@@ -63,6 +63,10 @@ html, body {
     text-align: center;
 }
 
+a {
+    cursor: pointer;
+}
+
 /** //主界面样式结束*/
 
 /** 公共样式 */
@@ -92,3 +96,36 @@ html, body {
 }
 
 /** //公共样式结束 */
+
+/** 标签输入框样式 */
+.tagsinput .tag {
+    background: #009688;
+    padding: 3px 19px 3px 4px;
+}
+
+.tagsinput .tag .tag-remove:after, .tagsinput .tag .tag-remove:before {
+    background: white;
+    top: 9px;
+    left: 5px;
+}
+
+.tagsinput {
+    font-size: 12px;
+    line-height: 14px;
+}
+
+.tagsinput .tag .tag-remove {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+}
+
+.tagsinput div input {
+    padding: 0px 0px 0px 3px;
+}
+
+.tagsinput div input::-webkit-input-placeholder {
+    color: #999;
+}
+
+/** // 标签输入框样式end */
