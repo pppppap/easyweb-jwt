@@ -9,7 +9,7 @@
     <link rel="icon" href="../assets/images/favicon.ico"/>
     <link rel="stylesheet" href="../assets/libs/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="../assets/libs/tagsinput/jquery.tagsinput-revisited.min.css" media="all">
-    <link rel="stylesheet" href="../assets/css/common.css" media="all">
+    <link rel="stylesheet" href="../assets/common.css" media="all">
 </head>
 
 <body>
@@ -89,16 +89,17 @@
 </script>
 <script type="text/javascript" src="../assets/libs/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="../assets/libs/jquery/clipboard.min.js"></script>
-<script type="text/javascript" src="../assets/libs/layui/layui.js"></script>
-<script type="text/javascript" src="../assets/js/common.js"></script>
 <script type="text/javascript" src="../assets/libs/tagsinput/jquery.tagsinput-revisited.min.js"></script>
+<script type="text/javascript" src="../assets/libs/layui/layui.js"></script>
+<script type="text/javascript" src="../assets/common.js"></script>
 <script>
-    layui.use(['layer', 'form', 'table', 'util'], function () {
+    layui.use(['layer', 'form', 'table', 'util','admin'], function () {
         var $ = layui.jquery;
         var layer = layui.layer;
         var form = layui.form;
         var table = layui.table;
         var util = layui.util;
+        var admin = layui.admin;
 
         // 渲染表格
         table.render({
@@ -106,7 +107,7 @@
             url: base_server + 'oauth/client',
             page: false,
             where: {
-                access_token: getToken().access_token
+                access_token: admin.getToken().access_token
             },
             cellMinWidth: 100,
             cols: [[
@@ -187,7 +188,7 @@
             }, function (i) {
                 layer.close(i);
                 layer.load(2);
-                req('oauth/client/' + client_id, {}, function (data) {
+                admin.req('oauth/client/' + client_id, {}, function (data) {
                     layer.closeAll('loading');
                     if (data.code == 200) {
                         layer.msg('删除成功', {icon: 1});
@@ -255,7 +256,7 @@
                 } else {
                     d.field.redirect_uri = [];
                 }
-                ajax({
+                admin.ajax({
                     url: base_server + 'oauth/client' + (data ? ('/' + data.client_id) : ''),
                     type: data ? 'PUT' : 'POST',
                     dataType: 'json',

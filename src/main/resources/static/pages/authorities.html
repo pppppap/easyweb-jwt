@@ -8,7 +8,7 @@
     <title>角色管理</title>
     <link rel="icon" href="../assets/images/favicon.ico"/>
     <link rel="stylesheet" href="../assets/libs/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="../assets/css/common.css" media="all">
+    <link rel="stylesheet" href="../assets/common.css" media="all">
 </head>
 
 <body>
@@ -26,21 +26,22 @@
 
 <!-- js部分 -->
 <script type="text/javascript" src="../assets/libs/layui/layui.js"></script>
-<script type="text/javascript" src="../assets/js/common.js"></script>
+<script type="text/javascript" src="../assets/common.js"></script>
 <script>
-    layui.use(['jquery', 'form', 'table', 'util'], function () {
+    layui.use(['jquery', 'form', 'table', 'util', 'admin'], function () {
         var $ = layui.jquery;
         var form = layui.form;
         var table = layui.table;
         var layer = layui.layer;
         var util = layui.util;
+        var admin = layui.admin;
 
         // 渲染表格
         table.render({
             elem: '#authTable',
             url: base_server + 'authorities',
             where: {
-                access_token: getToken().access_token
+                access_token: admin.getToken().access_token
             },
             page: false,
             cols: [[
@@ -62,7 +63,7 @@
             layer.confirm('确定进行同步吗？<br><span style="color: red;">（自动扫描所有接口生成权限标识）</span>', function () {
                 layer.load(2);
                 $.get('/v2/api-docs', function (data) {
-                    req('authorities/sync', {
+                    admin.req('authorities/sync', {
                         json: JSON.stringify(data)
                     }, function (res) {
                         layer.closeAll('loading');

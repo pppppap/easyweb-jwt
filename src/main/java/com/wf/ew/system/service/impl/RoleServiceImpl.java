@@ -2,12 +2,15 @@ package com.wf.ew.system.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.wf.ew.common.exception.ParameterException;
 import com.wf.ew.common.utils.UUIDUtil;
 import com.wf.ew.system.dao.RoleAuthoritiesMapper;
 import com.wf.ew.system.dao.RoleMapper;
+import com.wf.ew.system.dao.UserMapper;
 import com.wf.ew.system.dao.UserRoleMapper;
 import com.wf.ew.system.model.Role;
+import com.wf.ew.system.model.User;
 import com.wf.ew.system.model.UserRole;
 import com.wf.ew.system.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +20,8 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class RoleServiceImpl implements RoleService {
-    @Autowired
+public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
+    /*@Autowired
     private RoleMapper roleMapper;
     @Autowired
     private RoleAuthoritiesMapper roleAuthoritiesMapper;
@@ -79,5 +82,5 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public boolean delete(String roleId) {
         return roleMapper.deleteById(roleId) > 0;
-    }
+    }*/
 }

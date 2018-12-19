@@ -8,7 +8,7 @@
     <title>前后端分离开发平台</title>
     <link rel="icon" href="assets/images/favicon.ico"/>
     <link rel="stylesheet" href="assets/libs/layui/css/layui.css">
-    <link rel="stylesheet" href="assets/css/common.css">
+    <link rel="stylesheet" href="assets/common.css">
 </head>
 
 <body>
@@ -33,14 +33,15 @@
 </div>
 
 <script type="text/javascript" src="assets/libs/layui/layui.js"></script>
-<script type="text/javascript" src="assets/js/common.js"></script>
+<script type="text/javascript" src="assets/common.js"></script>
 <script>
-    layui.use(['jquery', 'layer', 'form'], function () {
+    layui.use(['jquery', 'layer', 'form', 'admin'], function () {
         var $ = layui.jquery;
         var layer = layui.layer;
         var form = layui.form;
+        var admin = layui.admin;
 
-        if (getToken()) {
+        if (admin.getToken()) {
             goIndex();
         }
 
@@ -66,7 +67,7 @@
                     layer.closeAll('loading');
                     if (data.access_token) {
                         layer.msg('登录成功', {icon: 1});
-                        putToken(data);
+                        admin.putToken(data);
                         goIndex();
                     } else {
                         layer.msg('登录失败，请重试', {icon: 5});

@@ -28,7 +28,7 @@ public class PageResult<T> {
         this.msg = "";
     }
 
-    public PageResult(long total, List<T> rows) {
+    public PageResult(List<T> rows, long total) {
         this.count = total;
         this.data = rows;
         this.code = 0;

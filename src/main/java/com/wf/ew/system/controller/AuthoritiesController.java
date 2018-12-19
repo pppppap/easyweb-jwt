@@ -2,12 +2,15 @@ package com.wf.ew.system.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.wf.ew.common.BaseController;
 import com.wf.ew.common.JsonResult;
 import com.wf.ew.common.PageResult;
 import com.wf.ew.common.utils.ReflectUtil;
 import com.wf.ew.system.model.Authorities;
+import com.wf.ew.system.model.RoleAuthorities;
 import com.wf.ew.system.service.AuthoritiesService;
+import com.wf.ew.system.service.RoleAuthoritiesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -26,6 +29,8 @@ import java.util.Set;
 public class AuthoritiesController extends BaseController {
     @Autowired
     private AuthoritiesService authoritiesService;
+    @Autowired
+    private RoleAuthoritiesService roleAuthoritiesService;
 
     @ApiOperation(value = "同步权限")
     @ApiImplicitParams({
@@ -50,7 +55,7 @@ public class AuthoritiesController extends BaseController {
                     list.add(authorities);
                 }
             }
-            authoritiesService.add(list);
+            authoritiesService.insertBatch(list);
             return JsonResult.ok("同步成功");
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,7 +71,7 @@ public class AuthoritiesController extends BaseController {
     @GetMapping
     public PageResult<Map<String, Object>> list(String roleId) {
         List<Map<String, Object>> maps = new ArrayList<>();
-        List<Authorities> authorities = authoritiesService.list();
+        List<Authorities> authorities = authoritiesService.selectList(null);
         List<String> roleAuths = authoritiesService.listByRoleId(roleId);
         for (Authorities one : authorities) {
             Map<String, Object> map = ReflectUtil.objectToMap(one);
@@ -90,7 +95,10 @@ public class AuthoritiesController extends BaseController {
     })
     @PostMapping("/role")
     public JsonResult addRoleAuth(String roleId, String authId) {
-        if (authoritiesService.addRoleAuth(roleId, authId)) {
+        RoleAuthorities roleAuth = new RoleAuthorities();
+        roleAuth.setRoleId(roleId);
+        roleAuth.setAuthority(authId);
+        if (roleAuthoritiesService.insert(roleAuth)) {
             return JsonResult.ok();
         }
         return JsonResult.error();
@@ -104,10 +112,7 @@ public class AuthoritiesController extends BaseController {
     })
     @DeleteMapping("/role")
     public JsonResult deleteRoleAuth(String roleId, String authId) {
-        if (roleId.equals("admin")) {
-            return JsonResult.error("演示系统不能对管理员操作");
-        }
-        if (authoritiesService.deleteRoleAuth(roleId, authId)) {
+        if (roleAuthoritiesService.delete(new EntityWrapper<RoleAuthorities>().eq("role_id", roleId).eq("authority", authId))) {
             return JsonResult.ok();
         }
         return JsonResult.error();

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * 客户端Client接口参数封装
  * Created by wangfan on 2018-12-11 下午 3:50.
  */
 public class ClientParam {

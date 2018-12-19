@@ -1,11 +1,14 @@
 package com.wf.ew.system.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.wf.ew.common.utils.UUIDUtil;
 import com.wf.ew.system.dao.AuthoritiesMapper;
 import com.wf.ew.system.dao.RoleAuthoritiesMapper;
+import com.wf.ew.system.dao.UserMapper;
 import com.wf.ew.system.model.Authorities;
 import com.wf.ew.system.model.RoleAuthorities;
+import com.wf.ew.system.model.User;
 import com.wf.ew.system.service.AuthoritiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,20 +18,11 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class AuthoritiesServiceImpl implements AuthoritiesService {
-    @Autowired
-    private AuthoritiesMapper authoritiesMapper;
-    @Autowired
-    private RoleAuthoritiesMapper roleAuthoritiesMapper;
+public class AuthoritiesServiceImpl extends ServiceImpl<AuthoritiesMapper, Authorities> implements AuthoritiesService {
 
     @Override
     public List<String> listByUserId(String userId) {
-        return authoritiesMapper.listByUserId(userId);
-    }
-
-    @Override
-    public List<Authorities> list() {
-        return authoritiesMapper.selectList(null);
+        return baseMapper.listByUserId(userId);
     }
 
     @Override
@@ -36,7 +30,7 @@ public class AuthoritiesServiceImpl implements AuthoritiesService {
         if (roleIds == null || roleIds.size() == 0) {
             return new ArrayList<>();
         }
-        return authoritiesMapper.listByRoleId(roleIds);
+        return baseMapper.listByRoleId(roleIds);
     }
 
     @Override
@@ -47,6 +41,20 @@ public class AuthoritiesServiceImpl implements AuthoritiesService {
         }
         return listByRoleId(roleIds);
     }
+
+   /* @Autowired
+    private AuthoritiesMapper authoritiesMapper;
+    @Autowired
+    private RoleAuthoritiesMapper roleAuthoritiesMapper;
+
+
+
+    @Override
+    public List<Authorities> list() {
+        return authoritiesMapper.selectList(null);
+    }
+
+
 
     @Override
     public boolean add(Authorities authorities) {
@@ -78,6 +86,6 @@ public class AuthoritiesServiceImpl implements AuthoritiesService {
     @Override
     public boolean deleteRoleAuth(String roleId, String authId) {
         return roleAuthoritiesMapper.delete(new EntityWrapper<RoleAuthorities>().eq("role_id", roleId).eq("authority", authId)) > 0;
-    }
+    }*/
 
 }

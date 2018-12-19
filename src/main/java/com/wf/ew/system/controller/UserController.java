@@ -1,19 +1,23 @@
 package com.wf.ew.system.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.wf.ew.common.BaseController;
 import com.wf.ew.common.JsonResult;
 import com.wf.ew.common.PageResult;
-import com.wf.ew.common.utils.StringUtil;
+import com.wf.ew.common.exception.BusinessException;
 import com.wf.ew.system.model.Role;
 import com.wf.ew.system.model.User;
+import com.wf.ew.system.model.UserRole;
+import com.wf.ew.system.service.RoleService;
+import com.wf.ew.system.service.UserRoleService;
 import com.wf.ew.system.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,6 +29,12 @@ import java.util.List;
 public class UserController extends BaseController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private UserRoleService userRoleService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * 这里参数过多，并且参数含有中文，建议用post请求，用restful风格解决不了需求时，建议不要强行使用restful
@@ -42,12 +52,38 @@ public class UserController extends BaseController {
     public PageResult<User> list(Integer page, Integer limit, String searchKey, String searchValue) {
         if (page == null) {
             page = 0;
-            limit = 0;
         }
-        if (StringUtil.isBlank(searchValue)) {
-            searchKey = null;
+        if (limit == null) {
+            limit = 10;
         }
-        return userService.list(page, limit, true, searchKey, searchValue);
+        Page<User> userPage = new Page<>(page, limit);
+        EntityWrapper<User> wrapper = new EntityWrapper<>();
+        if (searchKey != null && searchValue != null) {
+            wrapper.eq(searchKey, searchValue);
+        }
+        userService.selectPage(userPage, wrapper);
+        List<User> userList = userPage.getRecords();
+        // 关联查询role
+        List<String> userIds = new ArrayList<>();
+        for (User one : userList) {
+            userIds.add(one.getUserId());
+        }
+        List<UserRole> userRoles = userRoleService.selectList(new EntityWrapper().in("user_id", userIds));
+        List<Role> roles = roleService.selectList(null);
+        for (User one : userList) {
+            List<Role> tempUrs = new ArrayList<>();
+            for (UserRole ur : userRoles) {
+                if (one.getUserId().equals(ur.getUserId())) {
+                    for (Role r : roles) {
+                        if (ur.getRoleId().equals(r.getRoleId())) {
+                            tempUrs.add(r);
+                        }
+                    }
+                }
+            }
+            one.setRoles(tempUrs);
+        }
+        return new PageResult<>(userList, userPage.getTotal());
     }
 
     @ApiOperation(value = "添加用户", notes = "")
@@ -57,21 +93,23 @@ public class UserController extends BaseController {
             @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
     @PostMapping()
-    public JsonResult add(User user, String roleId) {
-        List<Role> roleIds = new ArrayList<>();
-        String[] split = roleId.split(",");
-        for (String t : split) {
-            Role role = new Role();
-            role.setRoleId(t);
-            roleIds.add(role);
-        }
-        user.setRoles(roleIds);
-        user.setPassword("123456");
-        if (userService.add(user)) {
+    public JsonResult add(User user, String roleIds) {
+        String[] split = roleIds.split(",");
+        user.setPassword(passwordEncoder.encode("123456"));
+        if (userService.insert(user)) {
+            List<UserRole> userRoles = new ArrayList<>();
+            for (String roleId : split) {
+                UserRole userRole = new UserRole();
+                userRole.setRoleId(roleId);
+                userRole.setUserId(user.getUserId());
+                userRoles.add(userRole);
+            }
+            if (!userRoleService.insertBatch(userRoles)) {
+                throw new BusinessException("添加失败");
+            }
             return JsonResult.ok("添加成功");
-        } else {
-            return JsonResult.error("添加失败");
         }
+        return JsonResult.error("添加失败");
     }
 
     @ApiOperation(value = "修改用户", notes = "")
@@ -81,23 +119,26 @@ public class UserController extends BaseController {
             @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
     @PutMapping()
-    public JsonResult update(User user, String roleId) {
-        if ("admin".equals(user.getUserId())) {
-            return JsonResult.error("演示系统不能操作admin");
-        }
-        List<Role> roleIds = new ArrayList<>();
-        String[] split = roleId.split(",");
-        for (String t : split) {
-            Role role = new Role();
-            role.setRoleId(t);
-            roleIds.add(role);
-        }
-        user.setRoles(roleIds);
-        if (userService.update(user)) {
+    public JsonResult update(User user, String roleIds) {
+        String[] split = roleIds.split(",");
+        user.setPassword(null);
+        if (userService.updateById(user)) {
+            List<UserRole> userRoles = new ArrayList<>();
+            List<String> ids = new ArrayList<>();
+            for (String roleId : split) {
+                UserRole userRole = new UserRole();
+                userRole.setRoleId(roleId);
+                userRole.setUserId(user.getUserId());
+                userRoles.add(userRole);
+                ids.add(roleId);
+            }
+            userRoleService.deleteBatchIds(ids);
+            if (!userRoleService.insertBatch(userRoles)) {
+                throw new BusinessException("修改失败");
+            }
             return JsonResult.ok("修改成功");
-        } else {
-            return JsonResult.error("修改失败");
         }
+        return JsonResult.error("修改失败");
     }
 
     @ApiOperation(value = "修改用户状态", notes = "")
@@ -108,14 +149,13 @@ public class UserController extends BaseController {
     })
     @PutMapping("/state")
     public JsonResult updateState(String userId, Integer state) {
-        if (true) {
-            return JsonResult.error("演示系统关闭该功能");
-        }
-        if (userService.updateState(userId, state)) {
+        User user = new User();
+        user.setUserId(userId);
+        user.setState(state);
+        if (userService.updateById(user)) {
             return JsonResult.ok();
-        } else {
-            return JsonResult.error();
         }
+        return JsonResult.error();
     }
 
     @ApiOperation(value = "修改自己密码", notes = "")
@@ -126,18 +166,17 @@ public class UserController extends BaseController {
     })
     @PutMapping("/psw")
     public JsonResult updatePsw(String oldPsw, String newPsw) {
-        if (true) {
-            return JsonResult.error("演示系统关闭该功能");
+        String secret = passwordEncoder.encode(oldPsw);
+        if (!(getLoginUser().getPassword()).equals(secret)) {
+            return JsonResult.error("原密码不正确");
         }
-        String finalSecret = "{bcrypt}" + new BCryptPasswordEncoder().encode(oldPsw);
-        if (finalSecret.equals(getLoginUser().getPassword())) {
-            return JsonResult.error("原密码输入不正确");
-        }
-        if (userService.updatePsw(getLoginUserId(), newPsw)) {
+        User user = new User();
+        user.setUserId(getLoginUserId());
+        user.setPassword(passwordEncoder.encode(newPsw));
+        if (userService.updateById(user)) {
             return JsonResult.ok("修改成功");
-        } else {
-            return JsonResult.error("修改失败");
         }
+        return JsonResult.error("修改失败");
     }
 
     @ApiOperation(value = "重置密码", notes = "")
@@ -147,13 +186,12 @@ public class UserController extends BaseController {
     })
     @PutMapping("/psw/{id}")
     public JsonResult resetPsw(@PathVariable("id") String userId) {
-        if ("admin".equals(userId)) {
-            return JsonResult.error("演示系统不能操作admin");
+        User user = new User();
+        user.setUserId(userId);
+        user.setPassword(passwordEncoder.encode("123456"));
+        if (userService.updateById(user)) {
+            return JsonResult.ok("重置密码成功");
         }
-        if (userService.updatePsw(userId, "123456")) {
-            return JsonResult.ok("重置成功");
-        } else {
-            return JsonResult.error("重置失败");
-        }
+        return JsonResult.error("重置密码失败");
     }
 }

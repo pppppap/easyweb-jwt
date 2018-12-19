@@ -1,11 +1,13 @@
 package com.wf.ew.system.service;
 
+import com.baomidou.mybatisplus.service.IService;
 import com.wf.ew.system.model.Role;
+import com.wf.ew.system.model.User;
 
 import java.util.List;
 
-public interface RoleService {
-
+public interface RoleService extends IService<Role> {
+/*
     String[] getRoleIds(String userId);
 
     List<Role> list(boolean showDelete);
@@ -19,5 +21,6 @@ public interface RoleService {
     boolean updateState(String roleId, int isDelete);
 
     boolean delete(String roleId);
+*/
 
 }

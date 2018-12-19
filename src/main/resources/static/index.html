@@ -8,8 +8,7 @@
     <title>前后端分离开发平台</title>
     <link rel="icon" href="assets/images/favicon.ico"/>
     <link rel="stylesheet" href="assets/libs/layui/css/layui.css">
-    <link rel="stylesheet" href="assets/css/admin.css">
-    <link rel="stylesheet" href="assets/css/common.css">
+    <link rel="stylesheet" href="assets/common.css">
 </head>
 
 <body class="layui-layout-body">
@@ -68,14 +67,15 @@
 </div>
 
 <script type="text/javascript" src="assets/libs/layui/layui.js"></script>
-<script type="text/javascript" src="assets/js/common.js"></script>
+<script type="text/javascript" src="assets/common.js"></script>
 <script>
-    layui.use(['jquery', 'layer', 'element'], function () {
+    layui.use(['jquery', 'layer', 'element', 'admin'], function () {
         var $ = layui.jquery;
         var layer = layui.layer;
         var element = layui.element;
+        var admin = layui.admin;
 
-        if (!getToken()) {
+        if (!admin.getToken()) {
             location.replace('login.html');
         }
 
@@ -83,11 +83,12 @@
         $('#btnExit').click(function () {
             layer.confirm('确定退出登录吗？', function (i) {
                 layer.close(i);
-                removeToken();
+                admin.removeToken();
                 location.replace('login.html');
             });
         });
 
+        // 侧边栏点击事件
         $('*[lay-href]').click(function () {
             var url = $(this).attr('lay-href');
             $('iframe[name=body]').attr('src', url);
@@ -95,7 +96,7 @@
 
         //
         $('#ag').mouseenter(function () {
-            layer.tips("EasyWeb管理系统模板", this, {
+            layer.tips("EasyWeb管理系统模板V3.x", this, {
                 tips: [2, '#3A3D49'], time: -1, success: function (layero, index) {
                     $(layero).css({'top': '10px'});
                 }
