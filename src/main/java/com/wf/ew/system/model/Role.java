@@ -8,24 +8,22 @@ import java.util.Date;
 @TableName("sys_role")
 public class Role {
     @TableId
-    private String roleId;
+    private Integer roleId;
 
     private String roleName;
 
     private String comments;
 
-    private Integer isDelete;
-
     private Date createTime;
 
     private Date updateTime;
 
-    public String getRoleId() {
+    public Integer getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
-        this.roleId = roleId == null ? null : roleId.trim();
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
     public String getRoleName() {
@@ -42,14 +40,6 @@ public class Role {
 
     public void setComments(String comments) {
         this.comments = comments == null ? null : comments.trim();
-    }
-
-    public Integer getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(Integer isDelete) {
-        this.isDelete = isDelete;
     }
 
     public Date getCreateTime() {

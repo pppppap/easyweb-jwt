@@ -20,9 +20,9 @@
             <div style="display: inline-block;width: 100px;margin-right: 10px;">
                 <select id="sltKey">
                     <option value="">搜索条件</option>
-                    <option value="user_id">ID</option>
                     <option value="username">账号</option>
                     <option value="nick_name">用户名</option>
+                    <option value="sex">性别</option>
                     <option value="phone">手机号</option>
                 </select>
             </div>
@@ -241,16 +241,17 @@
                         formSelects.value('selRole', rds);  // 回显多选框
                     }
                     // 表单提交事件
-                    form.on('submit(userFormSubmit)', function (data) {
+                    form.on('submit(userFormSubmit)', function (d) {
+                        d.field.roleIds = formSelects.value('selRole', 'valStr');
                         layer.load(2);
-                        admin.req('user', data.field, function (res) {
+                        admin.req('user', d.field, function (res) {
                             layer.closeAll('loading');
                             if (res.code == 200) {
                                 layer.msg(res.msg, {icon: 1});
                                 layer.closeAll('page');
                                 table.reload('userTable');
                             } else {
-                                layer.msg(data.msg, {icon: 2});
+                                layer.msg(res.msg, {icon: 2});
                             }
                         }, data ? 'PUT' : 'POST');
                         return false;

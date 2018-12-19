@@ -58,13 +58,14 @@ public class UserController extends BaseController {
         }
         Page<User> userPage = new Page<>(page, limit);
         EntityWrapper<User> wrapper = new EntityWrapper<>();
-        if (searchKey != null && searchValue != null) {
+        if (searchKey != null && !searchKey.trim().isEmpty() && searchValue != null && !searchValue.trim().isEmpty()) {
             wrapper.eq(searchKey, searchValue);
         }
+        wrapper.orderBy("create_time", true);
         userService.selectPage(userPage, wrapper);
         List<User> userList = userPage.getRecords();
         // 关联查询role
-        List<String> userIds = new ArrayList<>();
+        List<Integer> userIds = new ArrayList<>();
         for (User one : userList) {
             userIds.add(one.getUserId());
         }
@@ -96,11 +97,13 @@ public class UserController extends BaseController {
     public JsonResult add(User user, String roleIds) {
         String[] split = roleIds.split(",");
         user.setPassword(passwordEncoder.encode("123456"));
+        user.setState(null);
+        user.setEmailVerified(null);
         if (userService.insert(user)) {
             List<UserRole> userRoles = new ArrayList<>();
             for (String roleId : split) {
                 UserRole userRole = new UserRole();
-                userRole.setRoleId(roleId);
+                userRole.setRoleId(Integer.parseInt(roleId));
                 userRole.setUserId(user.getUserId());
                 userRoles.add(userRole);
             }
@@ -122,12 +125,14 @@ public class UserController extends BaseController {
     public JsonResult update(User user, String roleIds) {
         String[] split = roleIds.split(",");
         user.setPassword(null);
+        user.setState(null);
+        user.setEmailVerified(null);
         if (userService.updateById(user)) {
             List<UserRole> userRoles = new ArrayList<>();
             List<String> ids = new ArrayList<>();
             for (String roleId : split) {
                 UserRole userRole = new UserRole();
-                userRole.setRoleId(roleId);
+                userRole.setRoleId(Integer.parseInt(roleId));
                 userRole.setUserId(user.getUserId());
                 userRoles.add(userRole);
                 ids.add(roleId);
@@ -148,7 +153,10 @@ public class UserController extends BaseController {
             @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
     @PutMapping("/state")
-    public JsonResult updateState(String userId, Integer state) {
+    public JsonResult updateState(Integer userId, Integer state) {
+        if (state == null || (state != 0 && state != 1)) {
+            return JsonResult.error("state值需要在[0,1]中");
+        }
         User user = new User();
         user.setUserId(userId);
         user.setState(state);
@@ -185,7 +193,7 @@ public class UserController extends BaseController {
             @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
     @PutMapping("/psw/{id}")
-    public JsonResult resetPsw(@PathVariable("id") String userId) {
+    public JsonResult resetPsw(@PathVariable("id") Integer userId) {
         User user = new User();
         user.setUserId(userId);
         user.setPassword(passwordEncoder.encode("123456"));
@@ -193,5 +201,18 @@ public class UserController extends BaseController {
             return JsonResult.ok("重置密码成功");
         }
         return JsonResult.error("重置密码失败");
+    }
+
+    @ApiOperation(value = "删除用户", notes = "")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户id", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
+    })
+    @DeleteMapping("/{id}")
+    public JsonResult delete(@PathVariable("id") Integer userId) {
+        if (userService.deleteById(userId)) {
+            return JsonResult.ok("删除成功");
+        }
+        return JsonResult.error("删除失败");
     }
 }

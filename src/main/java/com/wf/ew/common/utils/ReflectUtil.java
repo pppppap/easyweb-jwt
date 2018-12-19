@@ -13,7 +13,7 @@ import java.util.Map;
 public class ReflectUtil {
 
     /**
-     * 把对象转成Map，只包含指定字段
+     * 把对象转成Map
      */
     public static <T> Map<String, Object> objectToMap(T t) {
         if (t == null) {

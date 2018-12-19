@@ -8,4 +8,6 @@ import com.wf.ew.system.model.User;
  * Created by Administrator on 2018-12-19 下午 4:38.
  */
 public interface RoleAuthoritiesService extends IService<RoleAuthorities> {
+
+    void deleteTrash();
 }

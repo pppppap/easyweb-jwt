@@ -27,7 +27,7 @@ public class BaseController {
     /**
      * 获取当前登录的userId
      */
-    public String getLoginUserId() {
+    public Integer getLoginUserId() {
         User loginUser = getLoginUser();
         return loginUser == null ? null : loginUser.getUserId();
     }

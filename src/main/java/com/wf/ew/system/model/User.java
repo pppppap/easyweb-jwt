@@ -13,44 +13,51 @@ import java.util.List;
 @TableName("sys_user")
 public class User implements UserDetails {
     private static final long serialVersionUID = 242146703513492331L;
+
     @TableId
-    private String userId;
+    private Integer userId;  // 用户id
 
-    private String username;
+    private String username;  // 账号
 
-    private String password;
+    private String password;  // 密码
 
-    private String nickName;
+    private String nickName;  // 昵称
 
-    private String avatar;
+    private String avatar;  // 头像
 
-    private String sex;
+    private String sex;  // 性别
 
-    private String phone;
+    private String phone;  // 手机号
 
-    private String email;
+    private String email;  // 邮箱
 
-    private Integer emailVerified;
+    private Integer emailVerified;  // 邮箱是否验证，0未验证，1已验证
 
-    private String personId;
+    private String trueName;  // 真实姓名
 
-    private Integer state;
+    private String idCard;  // 身份证号
 
-    private Date createTime;
+    private Date birthday;  // 出生日期
 
-    private Date updateTime;
+    private Integer departmentId; // 部门id
+
+    private Integer state;  // 状态，0正常，1冻结
+
+    private Date createTime;  // 注册时间
+
+    private Date updateTime;  // 修改时间
 
     @TableField(exist = false)
-    private List<Authorities> authorities;  //权限
+    private List<Authorities> authorities;  // 权限
 
     @TableField(exist = false)
-    private List<Role> roles;  //角色
+    private List<Role> roles;  // 角色
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -110,12 +117,36 @@ public class User implements UserDetails {
         this.emailVerified = emailVerified;
     }
 
-    public String getPersonId() {
-        return personId;
+    public String getTrueName() {
+        return trueName;
     }
 
-    public void setPersonId(String personId) {
-        this.personId = personId;
+    public void setTrueName(String trueName) {
+        this.trueName = trueName;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public Integer getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
     }
 
     public Integer getState() {
@@ -171,21 +202,21 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;  //账户是否未过期
+        return true;  // 账户是否未过期
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return this.state != 1;  //账户是否未锁定
+        return this.state != 1;  // 账户是否未锁定
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;  //凭证(密码)是否未过期
+        return true;  // 凭证(密码)是否未过期
     }
 
     @Override
     public boolean isEnabled() {
-        return true;  //用户是否启用
+        return true;  // 用户是否启用
     }
 }

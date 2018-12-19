@@ -8,28 +8,28 @@ import java.util.Date;
 @TableName("sys_role_authorities")
 public class RoleAuthorities {
     @TableId
-    private String id;
+    private Integer id;
 
-    private String roleId;
+    private Integer roleId;
 
     private String authority;
 
     private Date createTime;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getRoleId() {
+    public Integer getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
-        this.roleId = roleId == null ? null : roleId.trim();
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
     public String getAuthority() {

@@ -55,7 +55,9 @@ public class AuthoritiesController extends BaseController {
                     list.add(authorities);
                 }
             }
+            authoritiesService.delete(null);
             authoritiesService.insertBatch(list);
+            roleAuthoritiesService.deleteTrash();
             return JsonResult.ok("同步成功");
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +71,7 @@ public class AuthoritiesController extends BaseController {
             @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "query")
     })
     @GetMapping
-    public PageResult<Map<String, Object>> list(String roleId) {
+    public PageResult<Map<String, Object>> list(Integer roleId) {
         List<Map<String, Object>> maps = new ArrayList<>();
         List<Authorities> authorities = authoritiesService.selectList(null);
         List<String> roleAuths = authoritiesService.listByRoleId(roleId);
@@ -94,7 +96,7 @@ public class AuthoritiesController extends BaseController {
             @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
     @PostMapping("/role")
-    public JsonResult addRoleAuth(String roleId, String authId) {
+    public JsonResult addRoleAuth(Integer roleId, String authId) {
         RoleAuthorities roleAuth = new RoleAuthorities();
         roleAuth.setRoleId(roleId);
         roleAuth.setAuthority(authId);

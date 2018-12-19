@@ -2,6 +2,7 @@ package com.wf.ew.system.model;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Date;
@@ -9,7 +10,7 @@ import java.util.Date;
 @TableName("sys_authorities")
 public class Authorities implements GrantedAuthority {
     private static final long serialVersionUID = -6058060376656180793L;
-    @TableId
+    @TableId(type = IdType.INPUT)
     private String authority;
 
     private String authorityName;

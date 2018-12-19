@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class PageResult<T> {
 
-    private int code; //状态码, 0表示成功
+    private int code; // 状态码, 0 表示成功
 
-    private String msg;  //提示信息
+    private String msg;  // 提示信息
 
     private long count; // 总数量, bootstrapTable是total
 

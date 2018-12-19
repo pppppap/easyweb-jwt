@@ -31,9 +31,10 @@ public class MyExceptionHandler {
         }*/ else {
             String message = ex.getMessage();
             map.put("code", 500);
+//            map.put("msg", "服务器繁忙");  // 生产环境建议把详细的错误信息放在details中
             map.put("msg", message == null || message.trim().isEmpty() ? "未知错误" : message);
             map.put("details", message);
-            logger.error(ex.getMessage(), ex);
+            logger.error(message, ex);
             ex.printStackTrace();
         }
         return map;

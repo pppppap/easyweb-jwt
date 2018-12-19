@@ -265,10 +265,10 @@
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    success: function (data) {
+                    success: function (res) {
                         layer.closeAll('loading');
                         layer.closeAll('page');
-                        if (data.code == 200) {
+                        if (res.code == 200) {
                             layer.msg('操作成功', {icon: 1});
                             table.reload('clientTable');
                         } else {

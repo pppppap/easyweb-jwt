@@ -1,5 +1,6 @@
 package com.wf.ew.system.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.wf.ew.common.JsonResult;
 import com.wf.ew.common.PageResult;
 import com.wf.ew.system.model.Role;
@@ -28,14 +29,14 @@ public class RoleController {
     })
     @GetMapping()
     public PageResult<Role> list(String keyword) {
-        List<Role> list = roleService.selectList(null);
+        List<Role> list = roleService.selectList(new EntityWrapper<Role>().orderBy("create_time", true));
         // 筛选结果
         if (keyword != null && !keyword.trim().isEmpty()) {
             keyword = keyword.trim();
             Iterator<Role> iterator = list.iterator();
             while (iterator.hasNext()) {
                 Role next = iterator.next();
-                boolean b = next.getRoleId().contains(keyword) || next.getRoleName().contains(keyword) || next.getComments().contains(keyword);
+                boolean b = next.getRoleName().contains(keyword) || next.getComments().contains(keyword);
                 if (!b) {
                     iterator.remove();
                 }
