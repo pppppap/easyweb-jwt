@@ -58,11 +58,11 @@
 
 ## 项目截图
 
-![客户端管理](https://ws1.sinaimg.cn/large/006a7GCKgy1fstc7logerj30vq0i8js2.jpg)
+![客户端管理](https://ws1.sinaimg.cn/large/88052d6bly1fydmyl057gj20vp0haq39.jpg)
 
-![用户管理](https://ws1.sinaimg.cn/large/006a7GCKgy1fstc7ldhlbj315y0q6415.jpg)
+![用户管理](https://ws1.sinaimg.cn/large/88052d6bly1fydmzc42f1j210f0ha74u.jpg)
 
-![角色管理](https://ws1.sinaimg.cn/large/006a7GCKgy1fstc7lye0jj30vq0i8gmv.jpg)
+![角色管理](https://ws1.sinaimg.cn/large/88052d6bly1fydmz29i9kj20vp0hadg6.jpg)
 
 
 ## 相关学习资料
@@ -85,7 +85,7 @@
 
 ![群二维码](https://ws1.sinaimg.cn/large/006a7GCKgy1fstbxycj1xj305k07m75h.jpg)
 
-### 基于Layui的管理系统模板
+### EasyWeb管理系统模板
 &emsp;一个开箱即用的后台模板，使用简单，模板丰富，包含传统ifram版、spa单页面路由版，[前往查看](https://easyweb.vip)。
 
-![EasyWeb](https://ws1.sinaimg.cn/large/006a7GCKgy1fstc7lye0jj30vq0i8gmv.jpg)
+![EasyWeb](https://ws1.sinaimg.cn/large/88052d6bly1fydn64tcw6j20yz0jlgn4.jpg)
