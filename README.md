@@ -3,6 +3,7 @@
 ## 简介
 &emsp;基于 SpringBoot、Spring Security、OAuth2.0 的前后端分离开发平台。
 
+> 当前版本：`V2.5`，增加客户端管理，更新于2018/12/20。
 
 ## 使用技术
 
