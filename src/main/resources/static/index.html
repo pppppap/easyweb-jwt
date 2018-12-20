@@ -24,7 +24,7 @@
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item" lay-unselect>
-                <a><img src="assets/images/head.png" class="layui-nav-img"><span>管理员</span></a>
+                <a id="btnUP"><img src="assets/images/head.png" class="layui-nav-img"><span id="uName">用户名</span></a>
             </li>
             <li class="layui-nav-item" lay-unselect>
                 <a id="btnExit"><i class="layui-icon layui-icon-return"></i> 退出登录</a>
@@ -65,19 +65,62 @@
         <iframe name="body" class="admin-iframe" src="pages/client.html" frameborder="0"></iframe>
     </div>
 </div>
+<!-- 修改密码弹窗 -->
+<script type="text/html" id="upModel">
+    <form class="layui-form model-form" id="formPsw">
+        <div class="layui-form-item">
+            <label class="layui-form-label">原始密码:</label>
+            <div class="layui-input-block">
+                <input type="password" name="oldPsw" placeholder="请输入原始密码" class="layui-input"
+                       lay-verType="tips" lay-verify="required" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">新密码:</label>
+            <div class="layui-input-block">
+                <input type="password" name="newPsw" placeholder="请输入新密码" class="layui-input"
+                       lay-verType="tips" lay-verify="required|psw" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">确认密码:</label>
+            <div class="layui-input-block">
+                <input type="password" name="rePsw" placeholder="请再次输入新密码" class="layui-input"
+                       lay-verType="tips" lay-verify="required|repsw" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block text-right">
+                <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
+                <button class="layui-btn" lay-filter="submitPsw" lay-submit>保存</button>
+            </div>
+        </div>
+    </form>
+</script>
 
 <script type="text/javascript" src="assets/libs/layui/layui.js"></script>
 <script type="text/javascript" src="assets/common.js"></script>
 <script>
-    layui.use(['jquery', 'layer', 'element', 'admin'], function () {
+    layui.use(['jquery', 'layer', 'element', 'form', 'admin'], function () {
         var $ = layui.jquery;
         var layer = layui.layer;
         var element = layui.element;
+        var form = layui.form;
         var admin = layui.admin;
 
         if (!admin.getToken()) {
             location.replace('login.html');
         }
+
+        layer.load(2);
+        admin.req('userInfo', {}, function (res) {
+            layer.closeAll('loading');
+            if (200 == res.code) {
+                $('#uName').text(res.user.nickName);
+            } else {
+                layer.msg('获取用户失败', {icon: 2});
+            }
+        }, 'GET');
 
         // 退出登录
         $('#btnExit').click(function () {
@@ -94,9 +137,48 @@
             $('iframe[name=body]').attr('src', url);
         });
 
+        // 修改密码
+        $('#btnUP').click(function () {
+            layer.open({
+                type: 1,
+                title: '修改密码',
+                area: '360px',
+                offset: '65px',
+                content: $('#upModel').html()
+            });
+        });
+
+        // 监听修改密码表单提交
+        form.on('submit(submitPsw)', function (d) {
+            layer.load(2);
+            admin.req('user/psw', d.field, function (res) {
+                if (res.code == 200) {
+                    layer.closeAll('loading');
+                    layer.closeAll('page');
+                    layer.msg(res.msg, {icon: 1, time: 1500}, function () {
+                        // location.replace('login.html');
+                    });
+                } else {
+                    layer.closeAll('loading');
+                    layer.msg(res.msg, {icon: 2});
+                }
+            }, 'PUT');
+            return false;
+        });
+
+        // 添加表单验证方法
+        form.verify({
+            psw: [/^[\S]{5,12}$/, '密码必须5到12位，且不能出现空格'],
+            repsw: function (t) {
+                if (t !== $('#formPsw input[name=newPsw]').val()) {
+                    return '两次密码输入不一致';
+                }
+            }
+        });
+
         //
         $('#ag').mouseenter(function () {
-            layer.tips("EasyWeb管理系统模板V3.x", this, {
+            layer.tips("EasyWeb管理系统模板 V3.x", this, {
                 tips: [2, '#3A3D49'], time: -1, success: function (layero, index) {
                     $(layero).css({'top': '10px'});
                 }

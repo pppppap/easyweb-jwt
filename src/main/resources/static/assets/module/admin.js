@@ -43,6 +43,16 @@ layui.define(['layer'], function (exports) {
         ajax: function (param) {
             var successCallback = param.success;
             param.success = function (result, status, xhr) {
+                // 判断登录过期和没有权限
+                var jsonRs;
+                if ('json' == param.dataType.toLowerCase()) {
+                    jsonRs = result;
+                } else {
+                    jsonRs = admin.parseJSON(result);
+                }
+                if (jsonRs && admin.ajaxSuccessBefore(jsonRs) == false) {
+                    return;
+                }
                 successCallback(result, status, xhr);
             };
             param.error = function (xhr) {
@@ -66,6 +76,35 @@ layui.define(['layer'], function (exports) {
             });
             return headers;
         },
+        // ajax请求结束后的处理，返回false阻止代码执行
+        ajaxSuccessBefore: function (res) {
+            if (res.code == 401) {
+                admin.removeToken();
+                layer.msg('登录过期', {icon: 2, time: 1500}, function () {
+                    top.location.reload();
+                });
+                return false;
+            } else if (res.code == 403) {
+                layer.msg('没有访问权限', {icon: 2});
+            } else if (res.code == 404) {
+                layer.msg('目标不存在(404)', {icon: 2});
+            }
+            return true;
+        },
+        // 转换json
+        parseJSON: function (str) {
+            if (typeof str == 'string') {
+                try {
+                    var obj = JSON.parse(str);
+                    if (typeof obj == 'object' && obj) {
+                        return obj;
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        },
+        // 获取存储表名
         getTableName: function () {
             return tableName ? tableName : 'easyweb-open';
         }

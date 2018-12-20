@@ -25,7 +25,7 @@ import java.util.Set;
 
 @Api(value = "权限管理相关的接口", tags = "authorities")
 @RestController
-@RequestMapping("${ew.api.version}/authorities")
+@RequestMapping("${api.version}/authorities")
 public class AuthoritiesController extends BaseController {
     @Autowired
     private AuthoritiesService authoritiesService;

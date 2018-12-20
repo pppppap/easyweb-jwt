@@ -1,4 +1,4 @@
-var tableName = 'easyweb';  // 本地缓存表名
+var tableName = 'easyweb-open';  // 本地缓存表名
 var base_server = '/v1/';  // 接口地址
 
 // 配置layui模块所在的位置

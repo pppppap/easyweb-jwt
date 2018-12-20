@@ -22,8 +22,8 @@ import java.util.function.Consumer;
  **/
 @EnableResourceServer
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter implements ApplicationContextAware {
-    public static final String RESOURCE_NAME = "watchdog";
-    @Value("${ew.api.version}/**")
+    public static final String RESOURCE_NAME = "easyweb";
+    @Value("${api.version}/**")
     private String apiPrefPath;
     private ApplicationContext applicationContext;
 

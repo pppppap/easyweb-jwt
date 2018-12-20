@@ -17,7 +17,7 @@ import java.util.UUID;
 /**
  * Created by wangfan on 2018-12-13 下午 2:55.
  */
-@RequestMapping("${ew.api.version}/oauth/client")
+@RequestMapping("${api.version}/oauth/client")
 @RestController
 public class ClientController {
     @Autowired

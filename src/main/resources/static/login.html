@@ -23,10 +23,10 @@
             <input name="username" type="text" class="layui-input" placeholder="账号" lay-verify="required" required/>
         </div>
         <div class="layui-form-item">
-            <input name="password" type="text" class="layui-input" placeholder="密码" lay-verify="required" required/>
+            <input name="password" type="password" class="layui-input" placeholder="密码" lay-verify="required" required/>
         </div>
         <div class="layui-form-item">
-            <button type="button" class="layui-btn" lay-filter="loginSubmit" lay-submit>&emsp;登录&emsp;</button>
+            <button class="layui-btn" lay-filter="loginSubmit" lay-submit>&emsp;登录&emsp;</button>
             <button type="reset" class="layui-btn layui-btn-primary">&emsp;重置&emsp;</button>
         </div>
     </form>
@@ -66,9 +66,10 @@
                 success: function (data) {
                     layer.closeAll('loading');
                     if (data.access_token) {
-                        layer.msg('登录成功', {icon: 1});
                         admin.putToken(data);
-                        goIndex();
+                        layer.msg('登录成功', {icon: 1, time: 1500}, function () {
+                            goIndex();
+                        });
                     } else {
                         layer.msg('登录失败，请重试', {icon: 5});
                     }

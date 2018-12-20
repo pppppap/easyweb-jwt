@@ -25,7 +25,7 @@ import java.util.List;
 
 @Api(value = "用户相关的接口", tags = "user")
 @RestController
-@RequestMapping("${ew.api.version}/user")
+@RequestMapping("${api.version}/user")
 public class UserController extends BaseController {
     @Autowired
     private UserService userService;
@@ -174,8 +174,7 @@ public class UserController extends BaseController {
     })
     @PutMapping("/psw")
     public JsonResult updatePsw(String oldPsw, String newPsw) {
-        String secret = passwordEncoder.encode(oldPsw);
-        if (!(getLoginUser().getPassword()).equals(secret)) {
+        if (!passwordEncoder.matches(oldPsw, getLoginUser().getPassword())) {
             return JsonResult.error("原密码不正确");
         }
         User user = new User();

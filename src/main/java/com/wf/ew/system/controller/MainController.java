@@ -24,7 +24,7 @@ public class MainController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "获取个人信息")
     @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "query")
-    @GetMapping("${ew.api.version}/userInfo")
+    @GetMapping("${api.version}/userInfo")
     public JsonResult userInfo() {
         return JsonResult.ok().put("user", getLoginUser());
     }

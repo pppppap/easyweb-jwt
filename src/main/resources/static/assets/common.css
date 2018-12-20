@@ -99,6 +99,10 @@ a {
     margin-left: 5px;
 }
 
+img + span {
+    vertical-align: middle;
+}
+
 /** //公共样式结束 */
 
 /** 标签输入框样式 */
