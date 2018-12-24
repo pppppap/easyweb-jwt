@@ -19,10 +19,10 @@
 
 
 ## 导入项目
-1. 使用 IDEA 选择 Open 导入项目
-2. 导入数据库到MySQL中，sql 位于根目录
-3. 确认application-dev.properties 配置是否正确
-4. 浏览器访问 http://localhost:8088/ 
+1. 使用 IDEA 选择 Open 导入项目；
+2. 导入数据库到MySQL中，sql 位于根目录；
+3. 确认application-dev.properties 配置是否正确；
+4. 浏览器访问 http://localhost:8088/，账号是`admin`、`admin`。 
 
 
 ## 项目结构
