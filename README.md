@@ -14,8 +14,7 @@
 权限框架 | Spring Security、Security-OAuth2
 前端框架 | Layui 
 
-&emsp;在线演示地址：[在线演示](https://demo.easyweb.vip/iframe/)，
-如果对 security 和 oauth2 不熟悉可以在 [附件](https://gitee.com/whvse/EasyWeb/attach_files) 中下载shiro版本。
+&emsp;如果对 security 和 oauth2 不熟悉可以在 [附件](https://gitee.com/whvse/EasyWeb/attach_files) 中下载shiro版本。
 
 
 ## 导入项目
