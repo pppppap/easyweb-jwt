@@ -45,8 +45,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .authenticated()
                 .and()
                 .headers().frameOptions().sameOrigin()
-                .and()
-                .csrf().disable();
+                .and().cors()
+                .and().csrf().disable();
         registerWatchdogProvider(http.authorizeRequests());
     }
 
