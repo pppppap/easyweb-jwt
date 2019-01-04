@@ -30,7 +30,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("EasyWeb API文档")
-                .description("获取token到此界面 http://localhost:8088/login.html")
+                .description("前后端分离开发平台")
                 .termsOfServiceUrl("")
                 .contact("https://easyweb.vip")
                 .version("1.0")

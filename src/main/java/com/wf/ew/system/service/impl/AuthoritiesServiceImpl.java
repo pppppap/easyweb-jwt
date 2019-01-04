@@ -18,7 +18,7 @@ public class AuthoritiesServiceImpl extends ServiceImpl<AuthoritiesMapper, Autho
     }
 
     @Override
-    public List<String> listByRoleId(List<Integer> roleIds) {
+    public List<String> listByRoleIds(List<Integer> roleIds) {
         if (roleIds == null || roleIds.size() == 0) {
             return new ArrayList<>();
         }
@@ -31,7 +31,7 @@ public class AuthoritiesServiceImpl extends ServiceImpl<AuthoritiesMapper, Autho
         if (roleId != null) {
             roleIds.add(roleId);
         }
-        return listByRoleId(roleIds);
+        return listByRoleIds(roleIds);
     }
 
 }

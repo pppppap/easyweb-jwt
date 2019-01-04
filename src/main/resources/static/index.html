@@ -38,8 +38,7 @@
                 <li class="layui-nav-item layui-nav-itemed">
                     <a><i class="layui-icon layui-icon-set"></i>&emsp;系统管理</a>
                     <dl class="layui-nav-child">
-                        <dd class="layui-this"><a lay-href="pages/client.html">客户端管理</a></dd>
-                        <dd><a lay-href="pages/user.html">用户管理</a></dd>
+                        <dd class="layui-this"><a lay-href="pages/user.html">用户管理</a></dd>
                         <dd><a lay-href="pages/role.html">角色管理</a></dd>
                         <dd><a lay-href="pages/authorities.html">权限管理</a></dd>
                     </dl>
@@ -53,8 +52,7 @@
                 <li class="layui-nav-item">
                     <a><i class="layui-icon layui-icon-list"></i>&emsp;接口文档</a>
                     <dl class="layui-nav-child">
-                        <dd><a lay-href="">token接口</a></dd>
-                        <dd><a lay-href="/swagger-ui.html">其他接口</a></dd>
+                        <dd><a lay-href="/swagger-ui.html">接口文档</a></dd>
                     </dl>
                 </li>
             </ul>
@@ -62,7 +60,7 @@
     </div>
 
     <div class="layui-body">
-        <iframe name="body" class="admin-iframe" src="pages/client.html" frameborder="0"></iframe>
+        <iframe name="body" class="admin-iframe" src="pages/user.html" frameborder="0"></iframe>
     </div>
 </div>
 <!-- 修改密码弹窗 -->
@@ -118,7 +116,7 @@
             if (200 == res.code) {
                 $('#uName').text(res.user.nickName);
             } else {
-                layer.msg('获取用户失败', {icon: 2});
+                layer.msg('获取用户信息失败', {icon: 2});
             }
         }, 'GET');
 
@@ -129,12 +127,6 @@
                 admin.removeToken();
                 location.replace('login.html');
             });
-        });
-
-        // 侧边栏点击事件
-        $('*[lay-href]').click(function () {
-            var url = $(this).attr('lay-href');
-            $('iframe[name=body]').attr('src', url);
         });
 
         // 修改密码

@@ -5,20 +5,20 @@ layui.define(['layer'], function (exports) {
 
     var admin = {
         // 缓存token
-        putToken: function (token) {
+        putToken: function (access_token) {
             layui.data(admin.getTableName(), {
-                key: 'token',
-                value: token
+                key: 'access_token',
+                value: access_token
             });
         },
         // 获取缓存的token
         getToken: function () {
-            return layui.data(admin.getTableName()).token;
+            return layui.data(admin.getTableName()).access_token;
         },
         // 清除token
         removeToken: function () {
             layui.data(admin.getTableName(), {
-                key: 'token',
+                key: 'access_token',
                 remove: true
             });
         },
@@ -59,21 +59,26 @@ layui.define(['layer'], function (exports) {
                 param.success({code: xhr.status, msg: xhr.statusText});
             };
             param.beforeSend = function (xhr) {
-                var headers = admin.getAjaxHeaders();
+                /*var headers = admin.getAjaxHeaders();
                 for (var i = 0; i < headers.length; i++) {
                     xhr.setRequestHeader(headers[i].name, headers[i].value);
-                }
+                }*/
             };
+            if (admin.getToken()) {
+                param.data.access_token = admin.getToken();
+            }
             $.ajax(param);
         },
         // ajax自动传递header
         getAjaxHeaders: function () {
             var headers = [];
-            var token = admin.getToken();
-            headers.push({
-                name: 'Authorization',
-                value: 'Bearer ' + token.access_token
-            });
+            var access_token = admin.getToken();
+            if (access_token) {
+                headers.push({
+                    name: 'Authorization',
+                    value: 'Bearer ' + access_token
+                });
+            }
             return headers;
         },
         // ajax请求结束后的处理，返回false阻止代码执行
@@ -104,9 +109,9 @@ layui.define(['layer'], function (exports) {
                 }
             }
         },
-        // 获取存储表名
+        // 获取本地存储表名
         getTableName: function () {
-            return tableName ? tableName : 'easyweb-open';
+            return tableName ? tableName : 'easyweb-jwtp';
         }
     };
 
@@ -116,6 +121,15 @@ layui.define(['layer'], function (exports) {
         if (event == 'closeDialog') {
             var id = $(this).parents('.layui-layer').attr('id').substring(11);
             layer.close(id);
+        }
+    });
+
+    // 侧边栏点击事件
+    $('body').on('click', '*[lay-href]', function () {
+        try {
+            var url = $(this).attr('lay-href');
+            top.layui.jquery('iframe[name=body]').attr('src', url);
+        } catch (e) {
         }
     });
 

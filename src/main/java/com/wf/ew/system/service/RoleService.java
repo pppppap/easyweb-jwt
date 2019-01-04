@@ -5,6 +5,4 @@ import com.wf.ew.system.model.Role;
 
 public interface RoleService extends IService<Role> {
 
-    Integer[] getRoleIds(String userId);
-
 }

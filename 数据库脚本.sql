@@ -16,100 +16,41 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`easyweb` /*!40100 DEFAULT CHARACTER SET
 
 USE `easyweb`;
 
-/*Table structure for table `oauth_access_token` */
+/*Table structure for table `oauth_token` */
 
-DROP TABLE IF EXISTS `oauth_access_token`;
+DROP TABLE IF EXISTS `oauth_token`;
 
-CREATE TABLE `oauth_access_token` (
-  `authentication_id` varchar(128) NOT NULL,
-  `token_id` varchar(128) DEFAULT NULL,
-  `token` blob,
-  `user_name` varchar(128) DEFAULT NULL,
-  `client_id` varchar(128) DEFAULT NULL,
-  `authentication` blob,
-  `refresh_token` varchar(256) DEFAULT NULL,
-  PRIMARY KEY (`authentication_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `oauth_token` (
+  `token_id` int(11) NOT NULL AUTO_INCREMENT,
+  `access_token` varchar(128) NOT NULL,
+  `user_id` varchar(128) NOT NULL,
+  `permissions` varchar(512) DEFAULT NULL,
+  `roles` varchar(512) DEFAULT NULL,
+  `refresh_token` varchar(128) DEFAULT NULL,
+  `expire_time` datetime DEFAULT NULL,
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`token_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
-/*Data for the table `oauth_access_token` */
+/*Data for the table `oauth_token` */
 
-/*Table structure for table `oauth_approvals` */
+insert  into `oauth_token`(`token_id`,`access_token`,`user_id`,`permissions`,`roles`,`refresh_token`,`expire_time`,`create_time`,`update_time`) values (1,'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNTQ2Njc1NDcyfQ.-d6vmUtPorYgdkIRyEFPF1wFg8i85SqVrc9skSrm4Tc','1','[\"delete:/v1/oauth/client/{clientId}\",\"delete:/v1/role/{id}\",\"get:/v1/authorities\",\"get:/v1/oauth/client\",\"get:/v1/oauth/client/{clientId}\",\"get:/v1/role\",\"get:/v1/userInfo\",\"post:/v1/authorities/role\",\"post:/v1/authorities/sync\",\"post:/v1/oauth/client\",\"post:/v1/role\",\"post:/v1/user\",\"post:/v1/user/query\",\"put:/v1/oauth/client/{clientId}\",\"put:/v1/role\",\"put:/v1/user\",\"put:/v1/user/psw\",\"put:/v1/user/psw/{id}\",\"put:/v1/user/state\",\"delete:/v1/authorities/role\"]','[\"1\"]',NULL,'2019-01-05 16:04:32','2019-01-04 16:04:32','2019-01-04 16:04:32'),(2,'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNTQ2Njc5NDQ2fQ.kqgH6OcBd20JH0p8gni9N9vyYdVCNGg_OQarzWptTF8','1','[\"delete:/v1/oauth/client/{clientId}\",\"delete:/v1/role/{id}\",\"get:/v1/authorities\",\"get:/v1/oauth/client\",\"get:/v1/oauth/client/{clientId}\",\"get:/v1/role\",\"get:/v1/userInfo\",\"post:/v1/authorities/role\",\"post:/v1/authorities/sync\",\"post:/v1/oauth/client\",\"post:/v1/role\",\"post:/v1/user\",\"post:/v1/user/query\",\"put:/v1/oauth/client/{clientId}\",\"put:/v1/role\",\"put:/v1/user\",\"put:/v1/user/psw\",\"put:/v1/user/psw/{id}\",\"put:/v1/user/state\",\"delete:/v1/authorities/role\"]','[\"1\"]',NULL,'2019-01-05 17:10:47','2019-01-04 17:10:46','2019-01-04 17:10:46'),(3,'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNTQ2NjgwMTM3fQ.l8t3ls6zPRawB2cqIHjjuqQ3Sr3EFLXLJGOOqg3QZYo','1','[\"delete:/v1/oauth/client/{clientId}\",\"delete:/v1/role/{id}\",\"get:/v1/authorities\",\"get:/v1/oauth/client\",\"get:/v1/oauth/client/{clientId}\",\"get:/v1/role\",\"get:/v1/userInfo\",\"post:/v1/authorities/role\",\"post:/v1/authorities/sync\",\"post:/v1/oauth/client\",\"post:/v1/role\",\"post:/v1/user\",\"post:/v1/user/query\",\"put:/v1/oauth/client/{clientId}\",\"put:/v1/role\",\"put:/v1/user\",\"put:/v1/user/psw\",\"put:/v1/user/psw/{id}\",\"put:/v1/user/state\",\"delete:/v1/authorities/role\"]','[\"1\"]',NULL,'2019-01-05 17:22:18','2019-01-04 17:22:18','2019-01-04 17:22:18');
 
-DROP TABLE IF EXISTS `oauth_approvals`;
+/*Table structure for table `oauth_token_key` */
 
-CREATE TABLE `oauth_approvals` (
-  `userId` varchar(128) DEFAULT NULL,
-  `clientId` varchar(128) DEFAULT NULL,
-  `scope` varchar(256) DEFAULT NULL,
-  `status` varchar(10) DEFAULT NULL,
-  `expiresAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `lastModifiedAt` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+DROP TABLE IF EXISTS `oauth_token_key`;
 
-/*Data for the table `oauth_approvals` */
+CREATE TABLE `oauth_token_key` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `token_key` varchar(128) NOT NULL COMMENT '生成token时的key',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
-/*Table structure for table `oauth_client_details` */
+/*Data for the table `oauth_token_key` */
 
-DROP TABLE IF EXISTS `oauth_client_details`;
-
-CREATE TABLE `oauth_client_details` (
-  `client_id` varchar(128) NOT NULL,
-  `client_name` varchar(128) DEFAULT NULL,
-  `resource_ids` varchar(256) DEFAULT NULL,
-  `client_secret` varchar(256) DEFAULT NULL,
-  `raw_client_secret` varchar(256) DEFAULT NULL,
-  `scope` varchar(256) DEFAULT NULL,
-  `authorized_grant_types` varchar(256) DEFAULT NULL,
-  `web_server_redirect_uri` varchar(256) DEFAULT NULL,
-  `authorities` varchar(256) DEFAULT NULL,
-  `access_token_validity` int(11) DEFAULT NULL,
-  `refresh_token_validity` int(11) DEFAULT NULL,
-  `additional_information` varchar(4096) DEFAULT NULL,
-  `autoapprove` varchar(256) DEFAULT NULL,
-  PRIMARY KEY (`client_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='客户端';
-
-/*Data for the table `oauth_client_details` */
-
-insert  into `oauth_client_details`(`client_id`,`client_name`,`resource_ids`,`client_secret`,`raw_client_secret`,`scope`,`authorized_grant_types`,`web_server_redirect_uri`,`authorities`,`access_token_validity`,`refresh_token_validity`,`additional_information`,`autoapprove`) values ('397fd05f-3bfd-4205-a641-aaf0f8522744','管理后台','easyweb','$2a$10$OUkrfzhX8AwqSnTKFyoWKe9IPDkhkTDF/Bu39RvdAgoT7i3ID.3Ou','2777e2f6-60a7-4a92-b02b-be92b52ab763','DEFAULT','password,refresh_token,client_credentials','urn:ietf:wg:oauth:2.0:oob','CLIENT',NULL,NULL,'{}','');
-
-/*Table structure for table `oauth_client_token` */
-
-DROP TABLE IF EXISTS `oauth_client_token`;
-
-CREATE TABLE `oauth_client_token` (
-  `authentication_id` varchar(128) NOT NULL,
-  `token_id` varchar(128) DEFAULT NULL,
-  `token` blob,
-  `user_name` varchar(128) DEFAULT NULL,
-  `client_id` varchar(128) DEFAULT NULL,
-  PRIMARY KEY (`authentication_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-/*Data for the table `oauth_client_token` */
-
-/*Table structure for table `oauth_code` */
-
-DROP TABLE IF EXISTS `oauth_code`;
-
-CREATE TABLE `oauth_code` (
-  `code` varchar(128) DEFAULT NULL,
-  `authentication` blob
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-/*Data for the table `oauth_code` */
-
-/*Table structure for table `oauth_refresh_token` */
-
-DROP TABLE IF EXISTS `oauth_refresh_token`;
-
-CREATE TABLE `oauth_refresh_token` (
-  `token_id` varchar(128) DEFAULT NULL,
-  `token` blob,
-  `authentication` blob
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-/*Data for the table `oauth_refresh_token` */
+insert  into `oauth_token_key`(`id`,`token_key`,`create_time`) values (1,'87b5b5c6cb2306a48b70744c78e6ab9af288b40ce5d5c4bc85f9896236e2baf0','2019-01-04 16:04:32');
 
 /*Table structure for table `sys_authorities` */
 
@@ -137,11 +78,11 @@ CREATE TABLE `sys_role` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='角色';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='角色';
 
 /*Data for the table `sys_role` */
 
-insert  into `sys_role`(`role_id`,`role_name`,`comments`,`create_time`,`update_time`) values (1,'管理员','管理员','2018-12-19 23:11:29','2018-12-19 23:11:29'),(2,'普通用户','普通用户','2018-12-19 23:12:09','2018-12-19 23:12:09');
+insert  into `sys_role`(`role_id`,`role_name`,`comments`,`create_time`,`update_time`) values (1,'管理员','管理员','2018-12-19 23:11:29','2018-12-19 23:11:29'),(2,'普通用户','普通用户','2018-12-19 23:12:09','2018-12-19 23:12:09'),(3,'sdsada','sdsada','2019-01-04 16:29:53','2019-01-04 16:29:53');
 
 /*Table structure for table `sys_role_authorities` */
 
@@ -156,11 +97,11 @@ CREATE TABLE `sys_role_authorities` (
   KEY `FK_sys_role_permission_pm` (`authority`),
   KEY `FK_sys_role_permission_role` (`role_id`),
   CONSTRAINT `sys_role_authorities_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`role_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='角色权限';
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='角色权限';
 
 /*Data for the table `sys_role_authorities` */
 
-insert  into `sys_role_authorities`(`id`,`role_id`,`authority`,`create_time`) values (1,1,'delete:/v1/authorities/role','2018-12-19 23:11:32'),(3,1,'delete:/v1/oauth/client/{clientId}','2018-12-19 23:11:35'),(4,1,'delete:/v1/role/{id}','2018-12-19 23:11:36'),(5,1,'get:/v1/authorities','2018-12-19 23:11:37'),(6,1,'get:/v1/oauth/client','2018-12-19 23:11:37'),(7,1,'get:/v1/oauth/client/{clientId}','2018-12-19 23:11:38'),(8,1,'get:/v1/role','2018-12-19 23:11:40'),(9,1,'get:/v1/userInfo','2018-12-19 23:11:41'),(10,1,'post:/v1/authorities/role','2018-12-19 23:11:41'),(11,1,'post:/v1/authorities/sync','2018-12-19 23:11:42'),(12,1,'post:/v1/oauth/client','2018-12-19 23:11:42'),(13,1,'post:/v1/role','2018-12-19 23:11:43'),(14,1,'post:/v1/user','2018-12-19 23:11:44'),(15,1,'post:/v1/user/query','2018-12-19 23:11:44'),(16,1,'put:/v1/oauth/client/{clientId}','2018-12-19 23:11:46'),(17,1,'put:/v1/role','2018-12-19 23:11:46'),(18,1,'put:/v1/user','2018-12-19 23:11:46'),(19,1,'put:/v1/user/psw','2018-12-19 23:11:47'),(20,1,'put:/v1/user/psw/{id}','2018-12-19 23:11:47'),(21,1,'put:/v1/user/state','2018-12-19 23:11:50'),(22,2,'get:/v1/authorities','2018-12-19 23:12:35'),(23,2,'get:/v1/oauth/client','2018-12-19 23:12:40'),(24,2,'get:/v1/oauth/client/{clientId}','2018-12-19 23:12:41'),(25,2,'get:/v1/role','2018-12-19 23:13:06'),(26,2,'get:/v1/userInfo','2018-12-19 23:13:10'),(28,2,'post:/v1/oauth/client','2018-12-19 23:13:21'),(29,2,'post:/v1/role','2018-12-19 23:13:22'),(30,2,'post:/v1/user','2018-12-19 23:13:23'),(31,2,'post:/v1/user/query','2018-12-19 23:13:25'),(32,2,'put:/v1/user/psw','2018-12-19 23:13:40');
+insert  into `sys_role_authorities`(`id`,`role_id`,`authority`,`create_time`) values (3,1,'delete:/v1/oauth/client/{clientId}','2018-12-19 23:11:35'),(4,1,'delete:/v1/role/{id}','2018-12-19 23:11:36'),(5,1,'get:/v1/authorities','2018-12-19 23:11:37'),(6,1,'get:/v1/oauth/client','2018-12-19 23:11:37'),(7,1,'get:/v1/oauth/client/{clientId}','2018-12-19 23:11:38'),(8,1,'get:/v1/role','2018-12-19 23:11:40'),(9,1,'get:/v1/userInfo','2018-12-19 23:11:41'),(10,1,'post:/v1/authorities/role','2018-12-19 23:11:41'),(11,1,'post:/v1/authorities/sync','2018-12-19 23:11:42'),(12,1,'post:/v1/oauth/client','2018-12-19 23:11:42'),(13,1,'post:/v1/role','2018-12-19 23:11:43'),(14,1,'post:/v1/user','2018-12-19 23:11:44'),(15,1,'post:/v1/user/query','2018-12-19 23:11:44'),(16,1,'put:/v1/oauth/client/{clientId}','2018-12-19 23:11:46'),(17,1,'put:/v1/role','2018-12-19 23:11:46'),(18,1,'put:/v1/user','2018-12-19 23:11:46'),(19,1,'put:/v1/user/psw','2018-12-19 23:11:47'),(20,1,'put:/v1/user/psw/{id}','2018-12-19 23:11:47'),(21,1,'put:/v1/user/state','2018-12-19 23:11:50'),(22,2,'get:/v1/authorities','2018-12-19 23:12:35'),(23,2,'get:/v1/oauth/client','2018-12-19 23:12:40'),(24,2,'get:/v1/oauth/client/{clientId}','2018-12-19 23:12:41'),(25,2,'get:/v1/role','2018-12-19 23:13:06'),(26,2,'get:/v1/userInfo','2018-12-19 23:13:10'),(28,2,'post:/v1/oauth/client','2018-12-19 23:13:21'),(29,2,'post:/v1/role','2018-12-19 23:13:22'),(30,2,'post:/v1/user','2018-12-19 23:13:23'),(31,2,'post:/v1/user/query','2018-12-19 23:13:25'),(32,2,'put:/v1/user/psw','2018-12-19 23:13:40'),(33,1,'delete:/v1/authorities/role','2018-12-26 10:32:09');
 
 /*Table structure for table `sys_user` */
 
@@ -190,7 +131,7 @@ CREATE TABLE `sys_user` (
 
 /*Data for the table `sys_user` */
 
-insert  into `sys_user`(`user_id`,`username`,`password`,`nick_name`,`avatar`,`sex`,`phone`,`email`,`email_verified`,`true_name`,`id_card`,`birthday`,`department_id`,`state`,`create_time`,`update_time`) values (1,'admin','$2a$10$H4DFdvsvGIpzls1ZAkyHPOep2bMZJW7i5Uvkj5ekRIBXIPJH.7aHm','管理员',NULL,'男','12345678901',NULL,0,NULL,NULL,NULL,NULL,0,'2018-12-19 23:30:05','2018-12-19 23:30:19'),(2,'demo','$2a$10$lvHbU7xSHZePp7EOZQP08e06OFNWttKAlDzZZfe9gd5d9.tL1WgZW','Demo01',NULL,'男','12345678901',NULL,0,NULL,NULL,NULL,NULL,0,'2018-12-19 23:31:25','2018-12-19 23:31:25');
+insert  into `sys_user`(`user_id`,`username`,`password`,`nick_name`,`avatar`,`sex`,`phone`,`email`,`email_verified`,`true_name`,`id_card`,`birthday`,`department_id`,`state`,`create_time`,`update_time`) values (1,'admin','21232f297a57a5a743894a0e4a801fc3','管理员',NULL,'男','12345678901',NULL,0,NULL,NULL,NULL,NULL,0,'2018-12-19 23:30:05','2019-01-04 15:54:57'),(2,'demo','e10adc3949ba59abbe56e057f20f883e','Demo01',NULL,'男','12345678901',NULL,0,NULL,NULL,NULL,NULL,0,'2018-12-19 23:31:25','2019-01-04 17:24:32');
 
 /*Table structure for table `sys_user_role` */
 
@@ -204,11 +145,11 @@ CREATE TABLE `sys_user_role` (
   PRIMARY KEY (`id`),
   KEY `FK_sys_user_role` (`user_id`),
   KEY `FK_sys_user_role_role` (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='用户角色';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='用户角色';
 
 /*Data for the table `sys_user_role` */
 
-insert  into `sys_user_role`(`id`,`user_id`,`role_id`,`create_time`) values (1,1,1,'2018-12-19 23:30:06'),(2,2,2,'2018-12-19 23:31:25');
+insert  into `sys_user_role`(`id`,`user_id`,`role_id`,`create_time`) values (1,1,1,'2018-12-19 23:30:06'),(3,2,2,'2019-01-04 17:18:10');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

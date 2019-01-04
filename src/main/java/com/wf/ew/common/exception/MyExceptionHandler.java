@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.wf.jwtp.exception.TokenException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,15 +26,14 @@ public class MyExceptionHandler {
         if (ex instanceof IException) {
             map.put("code", ((IException) ex).getCode());
             map.put("msg", ex.getMessage());
-        }/* else if (ex instanceof UnauthorizedException) {
-            map.put("code", 403);
-            map.put("msg", "没有访问权限");
-        }*/ else {
+        } else if (ex instanceof TokenException) {
+            map.put("code", ((TokenException) ex).getCode());
+            map.put("msg", ex.getMessage());
+        } else {
             String message = ex.getMessage();
             map.put("code", 500);
-//            map.put("msg", "服务器繁忙");  // 生产环境建议把详细的错误信息放在details中
             map.put("msg", message == null || message.trim().isEmpty() ? "未知错误" : message);
-            map.put("details", message);
+            // map.put("details", message);
             logger.error(message, ex);
             ex.printStackTrace();
         }

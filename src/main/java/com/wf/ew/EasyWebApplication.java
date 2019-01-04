@@ -1,10 +1,10 @@
 package com.wf.ew;
 
-import com.wf.ew.oauth.configuration.EnableOAuthClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.wf.jwtp.configuration.EnableJwtPermission;
 
-@EnableOAuthClient
+@EnableJwtPermission
 @SpringBootApplication
 public class EasyWebApplication {
 

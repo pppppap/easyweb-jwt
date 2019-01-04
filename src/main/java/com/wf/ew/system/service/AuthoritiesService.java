@@ -9,7 +9,7 @@ public interface AuthoritiesService extends IService<Authorities> {
 
     List<String> listByUserId(Integer userId);
 
-    List<String> listByRoleId(List<Integer> roleId);
+    List<String> listByRoleIds(List<Integer> roleId);
 
     List<String> listByRoleId(Integer roleId);
 

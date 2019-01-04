@@ -2,6 +2,7 @@ package com.wf.ew.system.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.wangfan.endecrypt.utils.EndecryptUtils;
 import com.wf.ew.common.BaseController;
 import com.wf.ew.common.JsonResult;
 import com.wf.ew.common.PageResult;
@@ -16,8 +17,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -33,13 +34,7 @@ public class UserController extends BaseController {
     private RoleService roleService;
     @Autowired
     private UserRoleService userRoleService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
-    /**
-     * 这里参数过多，并且参数含有中文，建议用post请求，用restful风格解决不了需求时，建议不要强行使用restful
-     * 加了一个/query是避免跟添加用户接口冲突
-     */
     @ApiOperation(value = "查询所有用户", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer", paramType = "form"),
@@ -96,7 +91,7 @@ public class UserController extends BaseController {
     @PostMapping()
     public JsonResult add(User user, String roleIds) {
         String[] split = roleIds.split(",");
-        user.setPassword(passwordEncoder.encode("123456"));
+        user.setPassword(EndecryptUtils.encrytMd5("123456"));
         user.setState(null);
         user.setEmailVerified(null);
         if (userService.insert(user)) {
@@ -173,13 +168,13 @@ public class UserController extends BaseController {
             @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
     @PutMapping("/psw")
-    public JsonResult updatePsw(String oldPsw, String newPsw) {
-        if (!passwordEncoder.matches(oldPsw, getLoginUser().getPassword())) {
+    public JsonResult updatePsw(String oldPsw, String newPsw, HttpServletRequest request) {
+        if (!EndecryptUtils.encrytMd5(oldPsw).equals(userService.selectById(getLoginUserId(request)).getPassword())) {
             return JsonResult.error("原密码不正确");
         }
         User user = new User();
-        user.setUserId(getLoginUserId());
-        user.setPassword(passwordEncoder.encode(newPsw));
+        user.setUserId(getLoginUserId(request));
+        user.setPassword(EndecryptUtils.encrytMd5(newPsw));
         if (userService.updateById(user)) {
             return JsonResult.ok("修改成功");
         }
@@ -195,7 +190,7 @@ public class UserController extends BaseController {
     public JsonResult resetPsw(@PathVariable("id") Integer userId) {
         User user = new User();
         user.setUserId(userId);
-        user.setPassword(passwordEncoder.encode("123456"));
+        user.setPassword(EndecryptUtils.encrytMd5("123456"));
         if (userService.updateById(user)) {
             return JsonResult.ok("重置密码成功");
         }

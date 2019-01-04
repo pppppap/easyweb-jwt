@@ -1,8 +1,8 @@
 package com.wf.ew.common;
 
-import com.wf.ew.system.model.User;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.wf.jwtp.provider.Token;
+import org.wf.jwtp.util.SubjectUtil;
 
 /**
  * Controller基类
@@ -11,25 +11,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class BaseController {
 
     /**
-     * 获取当前登录的user
-     */
-    public User getLoginUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            Object object = authentication.getPrincipal();
-            if (object != null) {
-                return (User) object;
-            }
-        }
-        return null;
-    }
-
-    /**
      * 获取当前登录的userId
      */
-    public Integer getLoginUserId() {
-        User loginUser = getLoginUser();
-        return loginUser == null ? null : loginUser.getUserId();
+    public Integer getLoginUserId(HttpServletRequest request) {
+        Token token = SubjectUtil.getToken(request);
+        System.out.println("----------------------");
+        System.out.println(token);
+        System.out.println("----------------------");
+        return token == null ? null : Integer.parseInt(token.getUserId());
     }
 
 }

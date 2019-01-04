@@ -3,15 +3,12 @@ package com.wf.ew.system.model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 @TableName("sys_user")
-public class User implements UserDetails {
+public class User {
     private static final long serialVersionUID = 242146703513492331L;
 
     @TableId
@@ -185,38 +182,12 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
-    }
-
-    @Override
     public String getPassword() {
         return this.password;
     }
 
-    @Override
     public String getUsername() {
         return this.username;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;  // 账户是否未过期
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return this.state != 1;  // 账户是否未锁定
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;  // 凭证(密码)是否未过期
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;  // 用户是否启用
-    }
 }

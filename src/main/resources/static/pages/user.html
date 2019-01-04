@@ -116,7 +116,7 @@
             url: base_server + 'user/query',
             method: 'post',
             where: {
-                access_token: admin.getToken().access_token
+                access_token: admin.getToken()
             },
             page: true,
             cellMinWidth: 100,

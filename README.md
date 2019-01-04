@@ -1,9 +1,8 @@
 # EasyWeb
 
 ## 简介
-&emsp;基于 SpringBoot、Spring Security、OAuth2.0 的前后端分离开发平台。
+&emsp;基于 SpringBoot、Jwt、JwtPermission 的前后端分离开发平台。
 
-> 当前版本：`V2.5`，增加客户端管理，更新于2018/12/20。
 
 ## 使用技术
 
@@ -11,10 +10,8 @@
 :---|:---
 核心框架 | Spring、Spring Boot、Spring MVC
 持久层 | MyBatis、MyBatis-Plus、Druid
-权限框架 | Spring Security、Security-OAuth2
+权限框架 | Jwt、[JwtPermission](https://gitee.com/whvse/JwtPermission)
 前端框架 | Layui 
-
-&emsp;如果对 security 和 oauth2 不熟悉可以在 [附件](https://gitee.com/whvse/EasyWeb/attach_files) 中下载shiro版本。
 
 
 ## 导入项目
@@ -42,7 +39,6 @@
    |         |    |-JsonResult.java              // 结果集封装
    |         |    |-PageResult.java              // 分页结果集封装
    |         |
-   |         |-oauth                             // 扩展auth框架模块
    |         |-system                            // 系统管理模块
    |         |-xxxxxx                            // 其他业务模块
    |         |
@@ -57,8 +53,6 @@
 
 
 ## 项目截图
-
-![客户端管理](https://ws1.sinaimg.cn/large/88052d6bly1fydmyl057gj20vp0haq39.jpg)
 
 ![用户管理](https://ws1.sinaimg.cn/large/88052d6bly1fydmzc42f1j210f0ha74u.jpg)
 

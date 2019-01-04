@@ -14,10 +14,10 @@
 <body>
 <div class="login-logo">
     <img src="assets/images/logo.png">
-    <cite>EasyWeb</cite>
+    <cite>前后端分离开发平台</cite>
 </div>
 <div class="login-form">
-    <div class="title">前后端分离开发平台</div>
+    <div class="title">用户登录</div>
     <form class="layui-form" action="">
         <div class="layui-form-item">
             <input name="username" type="text" class="layui-input" placeholder="账号" lay-verify="required" required/>
@@ -51,38 +51,20 @@
             return false;
         });
 
-        // 使用密码模式登录
+        // 登录
         function doLogin(field) {
-            field.grant_type = 'password';
-            field.scope = 'DEFAULT';
-            field.client_id = '397fd05f-3bfd-4205-a641-aaf0f8522744';
-            field.client_secret = '2777e2f6-60a7-4a92-b02b-be92b52ab763';
             layer.load(2);
-            $.ajax({
-                url: '/oauth/token',
-                data: field,
-                type: 'POST',
-                dataType: 'JSON',
-                success: function (data) {
-                    layer.closeAll('loading');
-                    if (data.access_token) {
-                        admin.putToken(data);
-                        layer.msg('登录成功', {icon: 1, time: 1500}, function () {
-                            goIndex();
-                        });
-                    } else {
-                        layer.msg('登录失败，请重试', {icon: 5});
-                    }
-                },
-                error: function (xhr) {
-                    layer.closeAll('loading');
-                    if (xhr.status == 400) {
-                        layer.msg('账号或密码错误', {icon: 5});
-                    } else {
-                        layer.msg('登录失败，请查看console信息', {icon: 5});
-                    }
+            admin.req('login', field, function (res) {
+                layer.closeAll('loading');
+                if (200 == res.code) {
+                    admin.putToken(res.access_token);
+                    layer.msg(res.msg, {icon: 1, time: 1500}, function () {
+                        goIndex();
+                    });
+                } else {
+                    layer.msg(res.msg, {icon: 5});
                 }
-            });
+            }, 'POST');
         }
 
         function goIndex() {

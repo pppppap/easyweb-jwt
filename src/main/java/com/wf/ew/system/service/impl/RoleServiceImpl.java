@@ -13,14 +13,4 @@ import java.util.List;
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
-    @Override
-    public Integer[] getRoleIds(String userId) {
-        List<UserRole> userRoles = baseMapper.selectList(new EntityWrapper().eq("user_id", userId));
-        Integer[] roleIds = new Integer[userRoles.size()];
-        for (int i = 0; i < userRoles.size(); i++) {
-            roleIds[i] = userRoles.get(i).getRoleId();
-        }
-        return roleIds;
-    }
-
 }
