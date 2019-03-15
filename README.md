@@ -1,7 +1,7 @@
 # EasyWeb
 
 ## 简介
-&emsp;基于 SpringBoot、Jwt、JwtPermission 的前后端分离开发平台。
+&emsp;基于 SpringBoot、jwt和JwtPermission实现的前后端分离实现的学习项目，接口遵循RESTful风格，相比SpringSecurity和oAuth2.0框架更加轻量级。
 
 
 ## 使用技术
