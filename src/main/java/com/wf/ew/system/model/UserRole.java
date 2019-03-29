@@ -3,10 +3,13 @@ package com.wf.ew.system.model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @TableName("sys_user_role")
-public class UserRole {
+public class UserRole implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @TableId
     private Integer id;
 

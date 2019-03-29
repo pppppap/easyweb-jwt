@@ -1,37 +1,31 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>用户管理</title>
-    <link rel="icon" href="../assets/images/favicon.ico"/>
-    <link rel="stylesheet" href="../assets/libs/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="../assets/module/formSelects/formSelects-v4.css" media="all">
-    <link rel="stylesheet" href="../assets/common.css" media="all">
-</head>
-
-<body>
-
+<style>
+    .layui-badge-rim + .layui-badge-rim {
+        margin-left: 5px;
+    }
+</style>
 <div class="layui-fluid">
     <div class="layui-card">
-        <div class="layui-card-body layui-form">
-            <div style="display: inline-block;width: 100px;margin-right: 10px;">
-                <select id="sltKey">
-                    <option value="">搜索条件</option>
-                    <option value="username">账号</option>
-                    <option value="nick_name">用户名</option>
-                    <option value="sex">性别</option>
-                    <option value="phone">手机号</option>
-                </select>
-            </div>
-            <div style="display: inline-block;margin-right: 10px;width: 160px;">
-                <input id="edtSearch" class="layui-input" type="text" placeholder="输入关键字"/>
-            </div>
-            <div class="layui-inline">
-                <button id="userBtnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
-                <button id="userBtnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+        <div class="layui-card-body">
+            <div class="layui-form toolbar">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <select id="userSltKey">
+                            <option value="">搜索条件</option>
+                            <option value="username">账号</option>
+                            <option value="nick_name">用户名</option>
+                            <option value="sex">性别</option>
+                            <option value="phone">手机号</option>
+                        </select>
+                    </div>
+                    <div class="layui-inline">
+                        <input id="userEdtSearch" class="layui-input" type="text" placeholder="输入关键字"/>
+                    </div>
+                    <div class="layui-inline">
+                        <button id="userBtnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索
+                        </button>
+                        <button id="userBtnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+                    </div>
+                </div>
             </div>
 
             <table class="layui-table" id="userTable" lay-filter="userTable"></table>
@@ -41,13 +35,13 @@
 </div>
 
 <!-- 表格操作列 -->
-<script type="text/html" id="tableBar">
+<script type="text/html" id="userTableBar">
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="reset">重置密码</a>
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <!-- 表格状态列 -->
-<script type="text/html" id="tbaleState">
+<script type="text/html" id="userTbaleState">
     <input type="checkbox" lay-filter="ckState" lay-skin="switch" lay-text="正常|锁定"
            value="{{d.userId}}" {{d.state==0?'checked':''}}/>
 </script>
@@ -96,11 +90,8 @@
     </form>
 </script>
 
-<!-- js部分 -->
-<script type="text/javascript" src="../assets/libs/layui/layui.js"></script>
-<script type="text/javascript" src="../assets/common.js"></script>
 <script>
-    layui.use(['layer', 'form', 'table', 'util', 'formSelects', 'admin'], function () {
+    layui.use(['layer', 'form', 'table', 'util', 'formSelects', 'admin', 'config'], function () {
         var $ = layui.jquery;
         var layer = layui.layer;
         var form = layui.form;
@@ -108,15 +99,17 @@
         var util = layui.util;
         var formSelects = layui.formSelects;
         var admin = layui.admin;
+        var config = layui.config;
         var mRoles = [];  // 全部角色
+
+        form.render('select');
 
         // 渲染表格
         table.render({
             elem: '#userTable',
-            url: base_server + 'user/query',
-            method: 'post',
+            url: config.base_server + 'user',
             where: {
-                access_token: admin.getToken()
+                access_token: config.getToken()
             },
             page: true,
             cellMinWidth: 100,
@@ -140,17 +133,15 @@
                         return util.toDateString(d.createTime);
                     }, title: '创建时间'
                 },
-                {field: 'state', templet: '#tbaleState', title: '状态', unresize: true, width: 100},
-                {align: 'center', toolbar: '#tableBar', title: '操作', unresize: true, width: 200}
-            ]],
-            skin: 'line',
-            size: 'lg'
+                {field: 'state', templet: '#userTbaleState', title: '状态', unresize: true, width: 100},
+                {align: 'center', toolbar: '#userTableBar', title: '操作', unresize: true, width: 200}
+            ]]
         });
 
         // 搜索按钮点击事件
         $('#userBtnSearch').click(function () {
-            var key = $('#sltKey').val();
-            var value = $('#edtSearch').val();
+            var key = $('#userSltKey').val();
+            var value = $('#userEdtSearch').val();
             table.reload('userTable', {where: {searchKey: key, searchValue: value}});
         });
 
@@ -165,7 +156,9 @@
             var layEvent = obj.event;
 
             if (layEvent === 'del') { // 删除
-                layer.confirm('确定删除此用户吗？', function (i) {
+                layer.confirm('确定删除此用户吗？', {
+                    skin: 'layui-layer-admin'
+                }, function (i) {
                     layer.close(i);
                     layer.load(2);
                     admin.req('user/' + obj.data.userId, {}, function (data) {
@@ -179,7 +172,9 @@
                     }, 'DELETE');
                 });
             } else if (layEvent === 'reset') { // 重置密码
-                layer.confirm('确定重置此用户的密码吗？<br><span style="color: red;">（初始密码为123456）</span>', function (i) {
+                layer.confirm('确定重置此用户的密码吗？<br><span style="color: red;">（初始密码为123456）</span>', {
+                    skin: 'layui-layer-admin'
+                }, function (i) {
                     layer.close(i);
                     layer.load(2);
                     admin.req('user/psw/' + obj.data.userId, {}, function (data) {
@@ -216,7 +211,7 @@
 
         // 显示表单弹窗
         function showEditModel(data) {
-            layer.open({
+            admin.open({
                 type: 1,
                 area: '360px',
                 offset: '65px',
@@ -273,6 +268,3 @@
 
     });
 </script>
-
-</body>
-</html>

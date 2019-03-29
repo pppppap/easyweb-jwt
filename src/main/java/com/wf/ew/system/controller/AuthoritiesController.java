@@ -1,11 +1,10 @@
 package com.wf.ew.system.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.wf.ew.common.BaseController;
 import com.wf.ew.common.JsonResult;
 import com.wf.ew.common.PageResult;
+import com.wf.ew.common.utils.JSONUtil;
 import com.wf.ew.common.utils.ReflectUtil;
 import com.wf.ew.system.model.Authorities;
 import com.wf.ew.system.model.RoleAuthorities;
@@ -17,13 +16,13 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.wf.jwtp.annotation.RequiresPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-@Api(value = "权限管理相关的接口", tags = "authorities")
+@Api(value = "权限管理", tags = "authorities")
 @RestController
 @RequestMapping("${api.version}/authorities")
 public class AuthoritiesController extends BaseController {
@@ -32,6 +31,7 @@ public class AuthoritiesController extends BaseController {
     @Autowired
     private RoleAuthoritiesService roleAuthoritiesService;
 
+    @RequiresPermissions("post:/v1/authorities/sync")
     @ApiOperation(value = "同步权限")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "json", value = "权限列表json", required = true, dataType = "String", paramType = "form"),
@@ -39,32 +39,14 @@ public class AuthoritiesController extends BaseController {
     })
     @PostMapping("/sync")
     public JsonResult add(String json) {
-        try {
-            List<Authorities> list = new ArrayList<>();
-            JSONObject jsonObject = JSON.parseObject(json);
-            JSONObject paths = jsonObject.getJSONObject("paths");
-            Set<String> pathsKeys = paths.keySet();
-            for (String pathKey : pathsKeys) {
-                JSONObject apiObject = paths.getJSONObject(pathKey);
-                Set<String> apiKeys = apiObject.keySet();
-                for (String apiKey : apiKeys) {
-                    JSONObject methodObject = apiObject.getJSONObject(apiKey);
-                    Authorities authorities = new Authorities();
-                    authorities.setAuthority(apiKey + ":" + pathKey);
-                    authorities.setAuthorityName(methodObject.getString("summary"));
-                    list.add(authorities);
-                }
-            }
-            authoritiesService.delete(null);
-            authoritiesService.insertBatch(list);
-            roleAuthoritiesService.deleteTrash();
-            return JsonResult.ok("同步成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return JsonResult.error("同步失败");
-        }
+        List<Authorities> list = JSONUtil.parseArray(json, Authorities.class);
+        authoritiesService.delete(null);
+        authoritiesService.insertBatch(list);
+        roleAuthoritiesService.deleteTrash();
+        return JsonResult.ok("同步成功");
     }
 
+    @RequiresPermissions("get:/v1/authorities")
     @ApiOperation(value = "查询所有权限")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "roleId", value = "角色id", dataType = "String", paramType = "query"),
@@ -73,7 +55,7 @@ public class AuthoritiesController extends BaseController {
     @GetMapping
     public PageResult<Map<String, Object>> list(Integer roleId) {
         List<Map<String, Object>> maps = new ArrayList<>();
-        List<Authorities> authorities = authoritiesService.selectList(null);
+        List<Authorities> authorities = authoritiesService.selectList(new EntityWrapper<Authorities>().orderBy("sort", true));
         List<String> roleAuths = authoritiesService.listByRoleId(roleId);
         for (Authorities one : authorities) {
             Map<String, Object> map = ReflectUtil.objectToMap(one);
@@ -89,6 +71,7 @@ public class AuthoritiesController extends BaseController {
         return new PageResult<>(maps);
     }
 
+    @RequiresPermissions("post:/v1/authorities/role")
     @ApiOperation(value = "给角色添加权限")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "roleId", value = "角色id", required = true, dataType = "String", paramType = "form"),
@@ -106,6 +89,7 @@ public class AuthoritiesController extends BaseController {
         return JsonResult.error();
     }
 
+    @RequiresPermissions("delete:/v1/authorities/role")
     @ApiOperation(value = "移除角色权限")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "roleId", value = "角色id", required = true, dataType = "String", paramType = "query"),
@@ -113,7 +97,7 @@ public class AuthoritiesController extends BaseController {
             @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "query")
     })
     @DeleteMapping("/role")
-    public JsonResult deleteRoleAuth(String roleId, String authId) {
+    public JsonResult deleteRoleAuth(Integer roleId, String authId) {
         if (roleAuthoritiesService.delete(new EntityWrapper<RoleAuthorities>().eq("role_id", roleId).eq("authority", authId))) {
             return JsonResult.ok();
         }

@@ -14,11 +14,12 @@ public class BaseController {
      * 获取当前登录的userId
      */
     public Integer getLoginUserId(HttpServletRequest request) {
-        Token token = SubjectUtil.getToken(request);
-        System.out.println("----------------------");
-        System.out.println(token);
-        System.out.println("----------------------");
+        Token token = getLoginToken(request);
         return token == null ? null : Integer.parseInt(token.getUserId());
+    }
+
+    public Token getLoginToken(HttpServletRequest request) {
+        return SubjectUtil.getToken(request);
     }
 
 }

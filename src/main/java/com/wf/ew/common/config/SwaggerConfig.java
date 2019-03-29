@@ -29,10 +29,10 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("EasyWeb API文档")
-                .description("前后端分离开发平台")
+                .title("")
+                .description("")
                 .termsOfServiceUrl("")
-                .contact("https://easyweb.vip")
+                .contact("")
                 .version("1.0")
                 .build();
     }

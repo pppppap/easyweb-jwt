@@ -4,11 +4,12 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @TableName("sys_user")
-public class User {
+public class User implements Serializable {
     private static final long serialVersionUID = 242146703513492331L;
 
     @TableId
@@ -58,8 +59,16 @@ public class User {
         this.userId = userId;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {
@@ -170,6 +179,10 @@ public class User {
         this.updateTime = updateTime;
     }
 
+    public List<Authorities> getAuthorities() {
+        return authorities;
+    }
+
     public void setAuthorities(List<Authorities> authorities) {
         this.authorities = authorities;
     }
@@ -181,13 +194,4 @@ public class User {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public String getUsername() {
-        return this.username;
-    }
-
 }

@@ -20,11 +20,12 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.wf.jwtp.annotation.RequiresPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Api(value = "用户相关的接口", tags = "user")
+@Api(value = "用户管理", tags = "user")
 @RestController
 @RequestMapping("${api.version}/user")
 public class UserController extends BaseController {
@@ -35,6 +36,7 @@ public class UserController extends BaseController {
     @Autowired
     private UserRoleService userRoleService;
 
+    @RequiresPermissions("get:/v1/user")
     @ApiOperation(value = "查询所有用户", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer", paramType = "form"),
@@ -43,7 +45,7 @@ public class UserController extends BaseController {
             @ApiImplicitParam(name = "searchValue", value = "筛选条件关键字", dataType = "String", paramType = "form"),
             @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "form")
     })
-    @PostMapping("/query")
+    @GetMapping()
     public PageResult<User> list(Integer page, Integer limit, String searchKey, String searchValue) {
         if (page == null) {
             page = 0;
@@ -82,6 +84,7 @@ public class UserController extends BaseController {
         return new PageResult<>(userList, userPage.getTotal());
     }
 
+    @RequiresPermissions("post:/v1/user")
     @ApiOperation(value = "添加用户", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "user", value = "用户信息", required = true, dataType = "User", paramType = "form"),
@@ -110,6 +113,7 @@ public class UserController extends BaseController {
         return JsonResult.error("添加失败");
     }
 
+    @RequiresPermissions("put:/v1/user")
     @ApiOperation(value = "修改用户", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "user", value = "用户信息", required = true, dataType = "User", paramType = "form"),
@@ -124,15 +128,13 @@ public class UserController extends BaseController {
         user.setEmailVerified(null);
         if (userService.updateById(user)) {
             List<UserRole> userRoles = new ArrayList<>();
-            List<String> ids = new ArrayList<>();
             for (String roleId : split) {
                 UserRole userRole = new UserRole();
                 userRole.setRoleId(Integer.parseInt(roleId));
                 userRole.setUserId(user.getUserId());
                 userRoles.add(userRole);
-                ids.add(roleId);
             }
-            userRoleService.deleteBatchIds(ids);
+            userRoleService.delete(new EntityWrapper<UserRole>().eq("user_id", user.getUserId()));
             if (!userRoleService.insertBatch(userRoles)) {
                 throw new BusinessException("修改失败");
             }
@@ -141,6 +143,7 @@ public class UserController extends BaseController {
         return JsonResult.error("修改失败");
     }
 
+    @RequiresPermissions("put:/v1/user/state")
     @ApiOperation(value = "修改用户状态", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户id", required = true, dataType = "String", paramType = "form"),
@@ -161,6 +164,7 @@ public class UserController extends BaseController {
         return JsonResult.error();
     }
 
+    @RequiresPermissions("put:/v1/user/psw")
     @ApiOperation(value = "修改自己密码", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "oldPsw", value = "原密码", required = true, dataType = "String", paramType = "form"),
@@ -181,6 +185,7 @@ public class UserController extends BaseController {
         return JsonResult.error("修改失败");
     }
 
+    @RequiresPermissions("put:/v1/user/psw/{id}")
     @ApiOperation(value = "重置密码", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户id", required = true, dataType = "String", paramType = "path"),
@@ -197,6 +202,7 @@ public class UserController extends BaseController {
         return JsonResult.error("重置密码失败");
     }
 
+    @RequiresPermissions("delete:/v1/user")
     @ApiOperation(value = "删除用户", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户id", required = true, dataType = "String", paramType = "path"),

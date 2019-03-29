@@ -11,17 +11,19 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.wf.jwtp.annotation.RequiresPermissions;
 
 import java.util.Iterator;
 import java.util.List;
 
-@Api(value = "角色相关的接口", tags = "role")
+@Api(value = "角色管理", tags = "role")
 @RestController
 @RequestMapping("${api.version}/role")
 public class RoleController {
     @Autowired
     private RoleService roleService;
 
+    @RequiresPermissions("get:/v1/role")
     @ApiOperation(value = "查询所有角色")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "keyword", value = "搜索关键字", required = false, dataType = "String", paramType = "query"),
@@ -45,6 +47,7 @@ public class RoleController {
         return new PageResult<>(list);
     }
 
+    @RequiresPermissions("post:/v1/role")
     @ApiOperation(value = "添加角色")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "role", value = "角色信息", required = true, dataType = "Role", paramType = "form"),
@@ -58,6 +61,7 @@ public class RoleController {
         return JsonResult.error("添加失败");
     }
 
+    @RequiresPermissions("put:/v1/role")
     @ApiOperation(value = "修改角色")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "role", value = "角色信息", required = true, dataType = "Role", paramType = "form"),
@@ -71,13 +75,14 @@ public class RoleController {
         return JsonResult.error("修改失败！");
     }
 
+    @RequiresPermissions("delete:/v1/role/{id}")
     @ApiOperation(value = "删除角色")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "roleId", value = "角色id", required = true, dataType = "String", paramType = "path"),
             @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "query")
     })
     @DeleteMapping("/{id}")
-    public JsonResult delete(@PathVariable("id") String roleId) {
+    public JsonResult delete(@PathVariable("id") Integer roleId) {
         if (roleService.deleteById(roleId)) {
             return JsonResult.ok("删除成功");
         }
