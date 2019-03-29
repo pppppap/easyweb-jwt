@@ -64,6 +64,12 @@
             }
         });
 
+        // 搜索按钮点击事件
+        $('#authBtnSearch').click(function () {
+            var keyword = $('#authEdtSearch').val();
+            table.reload('authTable', {where: {keyword: keyword}});
+        });
+
         // 同步按钮点击事件
         $('#authBtnSync').click(function () {
             layer.confirm('确定进行同步吗？<br><span style="color: red;">（自动扫描所有接口生成权限标识）</span>', {

@@ -26,6 +26,7 @@ layui.config({
     // 获取用户信息
     layer.load(2);
     admin.req('user/info', {}, function (res) {
+        admin.removeLoading();  // 移除页面加载动画
         layer.closeAll('loading');
         if (200 == res.code) {
             config.putUser(res.user);
@@ -48,8 +49,4 @@ layui.config({
         });
     }, 'get');
 
-    // 移除loading动画
-    setTimeout(function () {
-        admin.removeLoading();
-    }, 300);
 });

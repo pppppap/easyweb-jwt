@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.wf.jwtp.annotation.RequiresPermissions;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -53,9 +54,22 @@ public class AuthoritiesController extends BaseController {
             @ApiImplicitParam(name = "access_token", value = "令牌", required = true, dataType = "String", paramType = "query")
     })
     @GetMapping
-    public PageResult<Map<String, Object>> list(Integer roleId) {
+    public PageResult<Map<String, Object>> list(Integer roleId, String keyword) {
         List<Map<String, Object>> maps = new ArrayList<>();
         List<Authorities> authorities = authoritiesService.selectList(new EntityWrapper<Authorities>().orderBy("sort", true));
+        // 筛选结果
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            keyword = keyword.trim();
+            Iterator<Authorities> iterator = authorities.iterator();
+            while (iterator.hasNext()) {
+                Authorities next = iterator.next();
+                boolean b = (next.getAuthorityName() != null && next.getAuthorityName().contains(keyword)) || (next.getParentName() != null && next.getParentName().contains(keyword)) || (next.getAuthority() != null && next.getAuthority().contains(keyword));
+                if (!b) {
+                    iterator.remove();
+                }
+            }
+        }
+        // 回显选中状态
         List<String> roleAuths = authoritiesService.listByRoleId(roleId);
         for (Authorities one : authorities) {
             Map<String, Object> map = ReflectUtil.objectToMap(one);
