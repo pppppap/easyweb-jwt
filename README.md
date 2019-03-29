@@ -1,8 +1,9 @@
 # easyweb-jwt
 
 ## 简介
-&emsp;基于 SpringBoot、jwt和JwtPermission实现的前后端分离实现的学习项目，接口遵循RESTful风格，相比SpringSecurity和oAuth2.0框架更加轻量级。
+&emsp;基于 SpringBoot、jwt和JwtPermission实现的前后端分离开发框架，接口遵循RESTful风格，相比SpringSecurity和oAuth2.0框架更加轻量级。
 
+> 在线演示：[http://jwt.easyweb.vip/](http://jwt.easyweb.vip/)， 账号：admin，密码：admin。
 
 ## 使用技术
 
@@ -18,7 +19,7 @@
 1. 使用 IDEA 选择 Open 导入项目；
 2. 导入数据库到MySQL中，sql 位于根目录；
 3. 确认application-dev.properties 配置是否正确；
-4. 浏览器访问 http://localhost:8088/，账号是`admin`、`admin`。 
+4. 启动项目，浏览器访问 `http://localhost:8088/`。 
 
 
 ## 项目结构
@@ -54,9 +55,9 @@
 
 ## 项目截图
 
-![用户管理](https://ws1.sinaimg.cn/large/88052d6bly1fydmzc42f1j210f0ha74u.jpg)
+![用户管理](http://sowcar.com/t6/692/1553847541x2890174267.png)
 
-![角色管理](https://ws1.sinaimg.cn/large/88052d6bly1fydmz29i9kj20vp0hadg6.jpg)
+![角色管理](http://sowcar.com/t6/692/1553847569x2890208949.png)
 
 
 ## 相关学习资料
