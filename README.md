@@ -14,7 +14,7 @@
 权限框架 | Jwt、[JwtPermission](https://gitee.com/whvse/JwtPermission)
 前端框架 | Layui 
 
-> 另外有基于SpringSecurity、oAuth2.0的版本[前往获取](https://easyweb.vip/order/buy?goodsId=3)，有基于Shiro的版本[前往获取](https://easyweb.vip/order/buy?goodsId=2)。
+> 另外有基于SpringSecurity、oAuth2.0的版本 [前往获取](https://easyweb.vip/order/buy?goodsId=3)， 有基于Shiro的版本 [在线演示](https://shiro.easyweb.vip)。
 
 ## 导入项目
 1. 使用 IDEA 选择 Open 导入项目；
