@@ -56,9 +56,9 @@
 
 ## 项目截图
 
-![用户管理](http://sowcar.com/t6/692/1553847541x2890174267.png)
+![用户管理](https://sowcar.com/t6/692/1553847541x2890174267.png)
 
-![角色管理](http://sowcar.com/t6/692/1553847569x2890208949.png)
+![角色管理](https://sowcar.com/t6/692/1553847569x2890208949.png)
 
 
 ## 相关学习资料
@@ -83,5 +83,3 @@
 
 ### EasyWeb管理系统模板
 &emsp;一个开箱即用的后台模板，使用简单，模板丰富，包含传统ifram版、spa单页面路由版，[前往查看](https://easyweb.vip)。
-
-![EasyWeb](https://ws1.sinaimg.cn/large/88052d6bly1fydn64tcw6j20yz0jlgn4.jpg)
