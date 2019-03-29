@@ -3,7 +3,7 @@
 ## 简介
 &emsp;基于 SpringBoot、jwt和JwtPermission实现的前后端分离开发框架，接口遵循RESTful风格，相比SpringSecurity和oAuth2.0框架更加轻量级。
 
-> 在线演示：[http://jwt.easyweb.vip/](http://jwt.easyweb.vip/)， 账号：admin，密码：admin。
+> 在线演示：[http://oauth.easyweb.vip/](http://oauth.easyweb.vip/)， 账号：admin，密码：admin。
 
 ## 使用技术
 
@@ -14,6 +14,7 @@
 权限框架 | Jwt、[JwtPermission](https://gitee.com/whvse/JwtPermission)
 前端框架 | Layui 
 
+> 另外有基于SpringSecurity、oAuth2.0的版本[前往获取](https://easyweb.vip/order/buy?goodsId=3)，有基于Shiro的版本[前往获取](https://easyweb.vip/order/buy?goodsId=2)。
 
 ## 导入项目
 1. 使用 IDEA 选择 Open 导入项目；
