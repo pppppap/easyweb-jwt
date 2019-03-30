@@ -16,7 +16,7 @@
 
 > 另外有基于SpringSecurity、oAuth2.0的版本 [前往获取](https://easyweb.vip/order/buy?goodsId=3)， 有基于Shiro的版本 [在线演示](https://shiro.easyweb.vip)。
 
-&emsp;前端的框架使用的是`easyweb`的spa版本，无需打包、npm环境即可使用。
+&emsp;前端的框架使用的是`easyweb`的spa版本，无需打包、npm环境即可使用，前端框架需要授权才可使用，授权可获得详细的开发文档。
 
 ## 导入项目
 1. 使用 IDEA 选择 Open 导入项目；
