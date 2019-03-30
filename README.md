@@ -12,15 +12,21 @@
 核心框架 | Spring、Spring Boot、Spring MVC
 持久层 | MyBatis、MyBatis-Plus、Druid
 权限框架 | Jwt、[JwtPermission](https://gitee.com/whvse/JwtPermission)
-前端框架 | Layui 
+前端框架 | Layui、[EasyWeb-SPA](https://easyw.vip) 
 
 > 另外有基于SpringSecurity、oAuth2.0的版本 [前往获取](https://easyweb.vip/order/buy?goodsId=3)， 有基于Shiro的版本 [在线演示](https://shiro.easyweb.vip)。
+
+&emsp;前端的框架使用的是`easyweb`的spa版本，无需打包、npm环境即可使用。
 
 ## 导入项目
 1. 使用 IDEA 选择 Open 导入项目；
 2. 导入数据库到MySQL中，sql 位于根目录；
 3. 确认application-dev.properties 配置是否正确；
 4. 启动项目，浏览器访问 `http://localhost:8088/`。 
+
+**分离部署：**
+1. 把`static`目录下的前端代码部署在nginx里面；
+2. 修改`assets/module/config.js`里面的`base_server`为你的后端地址；
 
 
 ## 项目结构
@@ -35,7 +41,6 @@
    |         |    |    |-SwaggerConfig.java      // Swagger2配置
    |         |    |
    |         |    |-exception                    // 自定义异常,统一异常处理器
-   |         |    |-oauth                        // 权限配置模块
    |         |    |-utils                        // 工具类
    |         |    |-BaseController.java          // controller基类
    |         |    |-JsonResult.java              // 结果集封装
@@ -81,5 +86,6 @@
 
 ![群二维码](https://ws1.sinaimg.cn/large/006a7GCKgy1fstbxycj1xj305k07m75h.jpg)
 
-### EasyWeb管理系统模板
+### 推荐
+**EasyWeb管系统模板**<br>
 &emsp;一个开箱即用的后台模板，使用简单，模板丰富，包含传统ifram版、spa单页面路由版，[前往查看](https://easyweb.vip)。
