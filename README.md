@@ -12,10 +12,10 @@
 核心框架 | Spring、Spring Boot、Spring MVC
 持久层 | MyBatis、MyBatis-Plus、Druid
 权限框架 | Jwt、[JwtPermission](https://gitee.com/whvse/JwtPermission)
-前端框架 | Layui、[EasyWeb-SPA](https://easyw.vip) 
+前端框架 | Layui、[easyweb-spa](https://easyweb.vip) 
 
 - 基于SpringSecurity、oAuth2.0的版本 [前往获取](https://easyweb.vip/order/buy?goodsId=3)
-- 基于SpringBoot、Shiro的版本 [在线演示](https://shiro.easyweb.vip)。
+- 基于SpringBoot、Shiro的版本 [在线演示](http://shiro.easyweb.vip)。
 
 &emsp;前端的框架使用的是`easyweb`的spa版本，无需打包、npm环境即可使用，前端框架需要授权才可使用，授权可获得详细的源码及开发文档。
 
