@@ -63,9 +63,9 @@
 
 ## 项目截图
 
-![权限管理](https://ww1.sinaimg.cn/large/007i4MEmgy1g1yq0csnmrj311w0iq0u6.jpg)
+![权限管理](https://pic.superbed.cn/item/5caeeb1a3a213b041707ac75)
 
-![菜单管理](https://ww1.sinaimg.cn/large/007i4MEmgy1g1yq0cn5gqj311w0iqdha.jpg)
+![菜单管理](https://pic.superbed.cn/item/5caeeb1a3a213b041707ac73)
 
 
 ## 相关学习资料
