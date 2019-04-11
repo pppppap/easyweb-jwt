@@ -63,9 +63,9 @@
 
 ## 项目截图
 
-![用户管理](https://sowcar.com/t6/692/1553847541x2890174267.png)
+![权限管理](https://ww1.sinaimg.cn/large/007i4MEmgy1g1yq0csnmrj311w0iq0u6.jpg)
 
-![角色管理](https://sowcar.com/t6/692/1553847569x2890208949.png)
+![菜单管理](https://ww1.sinaimg.cn/large/007i4MEmgy1g1yq0cn5gqj311w0iqdha.jpg)
 
 
 ## 相关学习资料
