@@ -202,7 +202,7 @@ public class UserController extends BaseController {
         return JsonResult.error("重置密码失败");
     }
 
-    @RequiresPermissions("delete:/v1/user")
+    @RequiresPermissions("delete:/v1/user/{id}")
     @ApiOperation(value = "删除用户", notes = "")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户id", required = true, dataType = "String", paramType = "path"),
