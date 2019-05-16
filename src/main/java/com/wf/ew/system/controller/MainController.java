@@ -133,7 +133,7 @@ public class MainController extends BaseController {
         List<Map<String, Object>> list = new ArrayList<>();
         for (int i = 0; i < menus.size(); i++) {
             Menu temp = menus.get(i);
-            if (parentId == temp.getParentId()) {
+            if (parentId.intValue() == temp.getParentId().intValue()) {
                 Map<String, Object> map = new HashMap<>();
                 map.put("name", temp.getMenuName());
                 map.put("icon", temp.getMenuIcon());

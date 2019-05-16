@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.wf.jwtp.exception.TokenException;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class MyExceptionHandler {
 
     @ResponseBody
     @ExceptionHandler(Exception.class)
-    public Map<String, Object> errorHandler(Exception ex) {
+    public Map<String, Object> errorHandler(Exception ex, HttpServletResponse response) {
         Map<String, Object> map = new HashMap<>();
         // 根据不同错误获取错误信息
         if (ex instanceof IException) {
@@ -36,6 +37,10 @@ public class MyExceptionHandler {
             logger.error(message, ex);
             ex.printStackTrace();
         }
+        // 支持跨域
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Max-Age", "3600");
         return map;
     }
 
