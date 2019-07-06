@@ -17,7 +17,8 @@
 - 基于SpringSecurity、oAuth2.0的版本 [前往获取](https://easyweb.vip/order/buy?goodsId=3)
 - 基于SpringBoot、Shiro的版本 [在线演示](http://shiro.easyweb.vip)。
 
-&emsp;前端的框架使用的是`easyweb`的spa版本，无需打包、npm环境即可使用，前端框架需要授权才可使用，授权可获得详细的源码及开发文档。
+&emsp;前端的框架使用的是[EasyWeb](http://easyweb.vip)的spa版本，无需打包、npm环境即可使用，前端框架需要授权才可使用，
+授权可获得详细的源码、开发文档及贴心的技术支持。
 
 ## 导入项目
 1. 使用 IDEA 选择 Open 导入项目；
@@ -63,9 +64,9 @@
 
 ## 项目截图
 
-![用户管理](https://pic.superbed.cn/item/5caeed253a213b041707c46d)
+![用户管理](https://s2.ax1x.com/2019/07/06/Zw8kyn.png)
 
-![权限管理](https://pic.superbed.cn/item/5caeeb1a3a213b041707ac75)
+![权限管理](https://s2.ax1x.com/2019/07/06/Zw8KW4.png)
 
 
 ## 相关学习资料
@@ -86,7 +87,7 @@
 ### 联系方式
 **欢迎加入“前后端分离技术交流群”**
 
-![群二维码](https://ws1.sinaimg.cn/large/006a7GCKgy1fstbxycj1xj305k07m75h.jpg)
+![群二维码](https://s2.ax1x.com/2019/07/06/Zw83O1.jpg)
 
 ### 推荐
 &emsp;**《EasyWeb管系统模板》**，一个开箱即用的后台模板，使用简单，模板丰富，包含ifram版和spa单页面版，[前往查看](https://easyweb.vip)。
