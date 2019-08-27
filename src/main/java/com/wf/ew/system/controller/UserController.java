@@ -2,7 +2,6 @@ package com.wf.ew.system.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.wangfan.endecrypt.utils.EndecryptUtils;
 import com.wf.ew.common.BaseController;
 import com.wf.ew.common.JsonResult;
 import com.wf.ew.common.PageResult;
@@ -19,6 +18,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 import org.wf.jwtp.annotation.RequiresPermissions;
 
@@ -94,7 +94,7 @@ public class UserController extends BaseController {
     @PostMapping()
     public JsonResult add(User user, String roleIds) {
         String[] split = roleIds.split(",");
-        user.setPassword(EndecryptUtils.encrytMd5("123456"));
+        user.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
         user.setState(null);
         user.setEmailVerified(null);
         if (userService.insert(user)) {
@@ -173,12 +173,12 @@ public class UserController extends BaseController {
     })
     @PutMapping("/psw")
     public JsonResult updatePsw(String oldPsw, String newPsw, HttpServletRequest request) {
-        if (!EndecryptUtils.encrytMd5(oldPsw).equals(userService.selectById(getLoginUserId(request)).getPassword())) {
+        if (!DigestUtils.md5DigestAsHex(oldPsw.getBytes()).equals(userService.selectById(getLoginUserId(request)).getPassword())) {
             return JsonResult.error("原密码不正确");
         }
         User user = new User();
         user.setUserId(getLoginUserId(request));
-        user.setPassword(EndecryptUtils.encrytMd5(newPsw));
+        user.setPassword(DigestUtils.md5DigestAsHex(newPsw.getBytes()));
         if (userService.updateById(user)) {
             return JsonResult.ok("修改成功");
         }
@@ -195,7 +195,7 @@ public class UserController extends BaseController {
     public JsonResult resetPsw(@PathVariable("id") Integer userId) {
         User user = new User();
         user.setUserId(userId);
-        user.setPassword(EndecryptUtils.encrytMd5("123456"));
+        user.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
         if (userService.updateById(user)) {
             return JsonResult.ok("重置密码成功");
         }

@@ -92,16 +92,9 @@
 
         <!-- JwtPermission -->
         <dependency>
-            <groupId>com.github.whvcse.JwtPermission</groupId>
-            <artifactId>jwtp-spring-boot-starter</artifactId>
-            <version>2.0.2</version>
-        </dependency>
-
-        <!-- 加密解密工具类 -->
-        <dependency>
             <groupId>com.github.whvcse</groupId>
-            <artifactId>EndecryptUtil</artifactId>
-            <version>1.0.5</version>
+            <artifactId>jwtp-spring-boot-starter</artifactId>
+            <version>2.0.3</version>
         </dependency>
 
     </dependencies>
@@ -110,12 +103,6 @@
         <repository>
             <id>nexus-aliyun</id>
             <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-        </repository>
-
-
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
