@@ -1,7 +1,6 @@
 package com.wf.ew.system.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.wangfan.endecrypt.utils.EndecryptUtils;
 import com.wf.ew.common.BaseController;
 import com.wf.ew.common.JsonResult;
 import com.wf.ew.common.utils.StringUtil;
@@ -16,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,7 +73,7 @@ public class MainController extends BaseController {
         User user = userService.getByUsername(username);
         if (user == null) {
             return JsonResult.error("账号不存在");
-        } else if (!user.getPassword().equals(EndecryptUtils.encrytMd5(password))) {
+        } else if (!user.getPassword().equals(DigestUtils.md5DigestAsHex(password.getBytes()))) {
             return JsonResult.error("密码错误");
         } else if (user.getState() != 0) {
             return JsonResult.error("账号被锁定");
