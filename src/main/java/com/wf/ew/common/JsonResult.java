@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public class JsonResult extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
-	
+
     private JsonResult() {
     }
 
@@ -81,6 +81,28 @@ public class JsonResult extends HashMap<String, Object> {
     @Override
     public JsonResult put(String key, Object object) {
         super.put(key, object);
+        return this;
+    }
+
+    public static JsonResult of(ResultCode code) {
+        return new JsonResult().setCode(code.code()).setMessage(code.msg());
+    }
+
+    public static JsonResult ok0() {
+        return of(ResultCode.SUCCESS);
+    }
+
+    public static JsonResult error0() {
+        return of(ResultCode.ERROR);
+    }
+
+    public JsonResult data(Object data) {
+        super.put("data", data);
+        return this;
+    }
+
+    public JsonResult msg(String msg) {
+        super.put("msg", msg);
         return this;
     }
 }

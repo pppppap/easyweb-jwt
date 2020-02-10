@@ -23,30 +23,23 @@ public class UUIDUtil {
 
     /**
      * 生成8位uuid
-     *
-     * @return
-     * @author wangfan
      */
     public static String randomUUID8() {
-        StringBuffer shortBuffer = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         String uuid = UUID.randomUUID().toString().replace("-", "");
         for (int i = 0; i < 8; i++) {
             String str = uuid.substring(i * 4, i * 4 + 4);
             int x = Integer.parseInt(str, 16);
-            shortBuffer.append(chars[x % 0x3E]);
+            sb.append(chars[x % 0x3E]);
         }
-        return shortBuffer.toString();
+        return sb.toString();
     }
 
     /**
      * 生成32位uuid
-     *
-     * @return
-     * @author wangfan
      */
     public static String randomUUID32() {
-        String uuid = UUID.randomUUID().toString().replace("-", "");
-        return uuid;
+        return UUID.randomUUID().toString().replace("-", "");
     }
 
 }
